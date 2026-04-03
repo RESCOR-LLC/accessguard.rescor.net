@@ -463,19 +463,24 @@ class IamOutputRow:
     the managed policy list, and the inline policies.
     """
     #---------------------------------------------------------------------------
-    def __init__ (self, reportDate=None, name=None, account=None, entityType=None, members=[], 
-        managed=[], policy=None, description=None, arn=None):
+    def __init__ (self, reportDate=None, name=None, account=None, entityType=None, members=[],
+        managed=[], policy=None, description=None, arn=None,
+        trustPolicy=None, tags=None, lastUsed=None, createDate=None):
         """ See the class definition for details. """
         self.id = None
         self.reportDate = reportDate if reportDate\
             else datetime.datetime.now().isoformat()
         self.name = name
-        self.description = None
+        self.description = description
         self.account = account
         self.entityType = entityType
         self.members = members
         self.managed = managed
         self.policy = policy
+        self.trustPolicy = trustPolicy or {}
+        self.tags = tags or {}
+        self.lastUsed = lastUsed
+        self.createDate = createDate
         self.arn = arn if arn\
             else f'arn:aws:iam::{self.account}:{self.entityType.lower()}/{self.name}'
 
@@ -500,7 +505,11 @@ class IamOutputRow:
         "description": self.description,
         "members": self.members,
         "managed": self.managed,
-        "policy": self.policy
+        "policy": self.policy,
+        "trustPolicy": self.trustPolicy,
+        "tags": self.tags,
+        "lastUsed": self.lastUsed,
+        "createDate": self.createDate,
       }
 
       if ttl:
