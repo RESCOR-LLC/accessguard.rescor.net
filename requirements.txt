@@ -1,5 +1,7 @@
 boto3>=1.26.0
 anthropic>=0.40.0
+aws-cdk-lib>=2.170.0
+constructs>=10.0.0
 
 # Test dependencies
 pytest>=7.0.0
