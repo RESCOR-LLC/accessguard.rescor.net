@@ -4,3 +4,5 @@ node_modules/
 obsolete/
 *.pyc
 .env
+cdk.out/
+.pytest_cache/

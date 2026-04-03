@@ -33,6 +33,29 @@
   - Model is user-selectable; default Sonnet for cost/speed balance
   - Graceful fallback: `--no-ai` runs deterministic analysis only
 
+### Phase 5: CDK Infrastructure
+
+#### Consolidated stack (`cdk/stacks/accessguard_stack.py`)
+- Replaces both `AgDatastore.yaml` and `AgInstaller.yaml` in a single CDK stack
+- CDK resolves the chicken-egg dependency between datastore and Lambda
+- DynamoDB tables switched from provisioned to PAY_PER_REQUEST (no capacity planning)
+- Lambda runtime updated from python3.7 to python3.12
+- IAM policies scoped to specific resources where possible (DynamoDB, S3, SSM)
+- SSO permissions now include `ListManagedPoliciesInPermissionSet` and `GetInlinePolicyForPermissionSet`
+
+#### Test fixtures stack (`cdk/stacks/test_fixtures_stack.py`)
+- 10 test IAM roles with deliberate overlaps for Level 3 testing:
+  - 2 exact duplicates (AppRole1, AppRole2)
+  - 2 near-matches at 75% Jaccard (DataRole1, DataRole2 — subset relationship)
+  - 1 strict subset (ReadOnlyRole)
+  - 1 unique with no overlap (LambdaExec)
+  - 2 identical inline policies with different names (InlineRole1, InlineRole2)
+  - 1 mixed managed + inline (MixedRole)
+  - 1 empty role (no policies)
+- 7 test-scoped managed policies (all prefixed `AGTest-`)
+- 1 test runner role with IAM read + SSO read permissions
+- All resources tagged `Application=AccessGuard`, `Environment=Test`, `AutoCleanup=True`
+
 ### Phase 3: Output Improvements
 
 #### Report generator (`reportGenerator.py`)
