@@ -1,2 +1,6 @@
 boto3>=1.26.0
 anthropic>=0.40.0
+
+# Test dependencies
+pytest>=7.0.0
+moto[iam,ssm,s3,sts]>=5.0.0
