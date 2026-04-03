@@ -4,20 +4,18 @@
 ################################################################################
 
 import argparse
-import enum 
-#import os
-import json
-import traceback
-import logging
-import commonClasses as cc
-import accessGuardClasses as agc
-import re
 import csv
-#import sys
-import pprint
-import boto3
 import datetime
 import hashlib
+import json
+import logging
+import pprint
+import re
+import traceback
+
+import boto3
+import commonClasses as cc
+import accessGuardClasses as agc
 
 # Lambdas to obtain elements of a botocore ClientError
 error = lambda thrown : thrown.get("Error", {}).get("Code", None)
@@ -66,7 +64,7 @@ def processIam (reportDate=None, account=None, results=[], similar=None):
   # Process each IAM entity
   for entity in entities:
     result =agc.IamOutputRow(name=entity["name"], account=entity["account"], 
-      ugr=entity["type"], members=entity["members"], managed=entity["managed"],
+      entityType=entity["type"], members=entity["members"], managed=entity["managed"],
       policy=entity["policy"], reportDate=reportDate)
 
     results.append(result)
@@ -119,7 +117,7 @@ def processSso (reportDate=None, account=None, results=[], similar=None):
         managed = details.get("AttachedManagedPolicies")
 
         result = agc.IamOutputRow(name=name, account=account.accountId, 
-          ugr="permission-set", managed=managed, policy=policies, arn=arn,
+          entityType="permission-set", managed=managed, policy=policies, arn=arn,
           description=details.get("Description"), reportDate=reportDate)
 
         results.append(result)
