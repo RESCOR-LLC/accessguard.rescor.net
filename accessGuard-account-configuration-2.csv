@@ -1,0 +1,3 @@
+AccountId,Nickname,AssumableRole,Partition,DefaultRegion,SSORegion
+326841612195,va-test,,aws,us-east-1,us-east-1
+307886110364,va-vaec,,aws,us-east-1,us-east-1

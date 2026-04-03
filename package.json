@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "graphql-tools": "^7.0.4",
+    "promise-toolbox": "^0.19.1"
+  }
+}
