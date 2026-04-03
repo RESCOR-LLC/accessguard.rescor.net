@@ -1,0 +1,217 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Execution Environment for AccessGuard
+Parameters: 
+  CodeFolder:
+    Type: String
+    Description: Location of Lambda ZIP archives
+    Default: Code
+  DataFolder:
+    Type: String
+    Description: Where to store AccessGuard results
+    Default: Data
+  AccessPrincipals:
+    Type: CommaDelimitedList
+    Description: >-
+      A comma-separated list of AWS principals to be granted access 
+      to the created S3 bucket and table. Your current IAM user, group or
+      role must have the authority to set IAM policies on the bucket 
+      and table.
+    Default: ""
+  ExpirationPeriod:
+    Type: Number
+    Description: "Maximum days to retain exported findings"
+    Default: 365
+  GlacierTransitionPeriod:
+    Type: Number
+    Description: "Maximum days before exported findings are moved to AWS Glacier"
+    Default: 31
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "S3 Folders"
+        Parameters:
+        - CodeFolder
+        - DataFolder
+      - Label:
+          default: "Data Retention & Other Policy Details"
+        Parameters:
+        - AccessPrincipals 
+        - GlacierTransitionPeriod
+        - ExpirationPeriod      
+    ParameterLabels:
+        CodeFolder:
+          default: "Where will Lambda ZIP files be stored?"
+        DataFolder:
+          default: "Where will AccessGuard results be stored?"
+        AccessPrincipals:
+          default: "Who can access this bucket?"
+        GlacierTransitionPeriod:
+          default: "How long beofre moving exports to Glacier?"
+        ExpirationPeriod:
+          default: "How long before deleting old exports?"
+Resources:
+  #-----------------------------------------------------------------------------
+  ConfigurationTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "accountId"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "accountId"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  #-----------------------------------------------------------------------------
+  ResultsTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "reportDate"
+          AttributeType: "S"
+        - 
+          AttributeName: "id"
+          AttributeType: "S"
+      KeySchema: 
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+        - 
+          AttributeName: "reportDate"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
+      TimeToLiveSpecification:
+        AttributeName: "TTL"
+        Enabled: true
+  #-----------------------------------------------------------------------------
+  SimilarityTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "reportDate"
+          AttributeType: "S"
+        - 
+          AttributeName: "id"
+          AttributeType: "S"
+      KeySchema: 
+        -
+          AttributeName: "id"
+          KeyType: "HASH"
+        - 
+          AttributeName: "reportDate"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
+      TimeToLiveSpecification:
+        AttributeName: "TTL"
+        Enabled: true
+  #-----------------------------------------------------------------------------
+  Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      ObjectLockEnabled: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      AccessControl: BucketOwnerFullControl
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+        - Id: "MoveToGlacier"
+          NoncurrentVersionTransitions:
+          - StorageClass: GLACIER
+            TransitionInDays: !Ref GlacierTransitionPeriod
+          ExpirationInDays: !Ref ExpirationPeriod
+          Status: "Enabled"
+          Transition:
+            StorageClass: GLACIER
+            TransitionInDays: !Ref GlacierTransitionPeriod
+  #-----------------------------------------------------------------------------
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref Bucket
+      PolicyDocument: 
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS: 
+              !Ref AccessPrincipals
+          Action:
+          - s3:PutObject*
+          - s3:ListBucket
+          - s3:GetObject*
+          Resource:
+          - !Sub "arn:${AWS::Partition}:s3:::${Bucket}"
+          - !Sub "arn:${AWS::Partition}:s3:::${Bucket}/*"
+  #-----------------------------------------------------------------------------
+  BucketNameParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The S3 bucket where Security Hub are exported
+      Name: /AccessGuard/Bucket
+      Type: String
+      Value: !Ref Bucket
+  #-----------------------------------------------------------------------------
+  CodeFolderParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The folder where AccessGuard code is stored
+      Name: /AccessGuard/CodeFolder
+      Type: String
+      Value: !Ref CodeFolder
+  #-----------------------------------------------------------------------------
+  DataFolderParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The folder where AccessGuard results are written
+      Name: /AccessGuard/DataFolder
+      Type: String
+      Value: !Ref DataFolder
+  #-----------------------------------------------------------------------------
+  ArchiveKeyParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The name of the ZIP archive containing Lambda code
+      Name: /AccessGuard/ArchiveKey
+      Type: String
+      Value: "Not Initialized"
+  #-----------------------------------------------------------------------------
+  ConfigurationTableParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The ARN of the DynamoDb configuration table
+      Name: /AccessGuard/ConfigurationTableArn
+      Type: String
+      Value: !GetAtt ConfigurationTable.Arn
+  #-----------------------------------------------------------------------------
+  ResultsTableParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The name of the DynamoDb results table
+      Name: /AccessGuard/ResultsTableArn
+      Type: String
+      Value: !GetAtt ResultsTable.Arn
+  #-----------------------------------------------------------------------------
+  SimilarityTableParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The name of the DynamoDb similarity table
+      Name: /AccessGuard/SimilarityTableArn
+      Type: String
+      Value: !GetAtt SimilarityTable.Arn

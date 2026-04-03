@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Provision AccessGuard Lambda
+Parameters: 
+  CodeArchive:
+    Type: String
+    Description: |-
+      S3 Object Key containing AccessGuard Lambda code 
+      (must be changed to load new code version)
+    Default: "Code/accessGuard.zip"
+Mappings:
+  PartitionMap:
+    aws:
+      principals:
+      - lambda.amazonaws.com
+      - ec2.amazonaws.com
+      - ssm.amazonaws.com
+    aws-us-gov:
+      principals:
+      - ec2.amazonaws.com
+      - lambda.amazonaws.com
+      - ssm.amazonaws.com
+Resources:
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: "Permissions to APIs used by AccessGuard"
+      AssumeRolePolicyDocument:
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: !FindInMap [ PartitionMap, !Ref AWS::Partition, "principals" ]
+          Action: sts:AssumeRole
+      Description: Provide necessary access for AccessGuard
+      Policies:
+        - PolicyName: SsoAdmin
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - sso-admin:ListInstances
+                  - sso-admin:ListPermissionSets
+                  - sso-admin:DescribePermissionSet
+                Resource: "*"
+        - PolicyName: Sts
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sts:AssumeRole
+                  - sts:GetCallerIdentity
+                Resource: "*"
+        - PolicyName: S3
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource: "*"
+        - PolicyName: Ssm
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:PutParameter
+                  - ssm:GetParameters
+                Resource: "*"
+        - PolicyName: DynamoDb
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:PutItem
+                  - dynamodb:DescribeTable
+                  - dynamodb:DeleteItem
+                Resource: "*"
+        - PolicyName: Iam
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                  - iam:GetRole
+                  - iam:GetGroup
+                  - iam:GetRole
+                  - iam:GetRolePolicy
+                  - iam:ListAttachedGroupPolicies
+                  - iam:ListAttachedRolePolicies
+                  - iam:ListAttachedUserPolicies
+                  - iam:ListGroupPolicies
+                  - iam:ListGroups
+                  - iam:ListRolePolicies
+                  - iam:ListRoles
+                  - iam:ListUserPolicies
+                  - iam:ListUsers
+                Resource: "*"
+      ManagedPolicyArns:
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  Lambda:
+    Type: AWS::Lambda::Function
+    Properties: 
+      Code: 
+        S3Bucket: "{{resolve:ssm:/AccessGuard/Bucket}}"
+        S3Key: !Ref CodeArchive
+      Description: "Catalog IAM Entities and Similarities for Role Engineering"
+      Handler: accessGuard.lambdaHandler
+      MemorySize: 2048
+      Role: !GetAtt Role.Arn
+      Runtime: "python3.7"
+      Timeout: 900
+      Tags:
+      - Key: CodeArchiveKey
+        Value: !Ref CodeArchive
