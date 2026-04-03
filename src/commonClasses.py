@@ -763,15 +763,6 @@ class DictionaryToObject:
       for key, value in self.dictionary.items():
           attribute = key if not callable(transform) else transform(key)
 
-          # A property map was provided
-          if isinstance(map, PropertyMap):
-            emit("220360", "d", f'using PropertyMap for {key}')
-            entry = map.getByKey(key)
-
-            if isinstance(entry, PropertyEntry):
-              value = entry.toInternal(value)
-              emit("220370", "d", f'PropertyEntry map {key} to value {value}')
-
           if key != attribute:
             emit("220380", "d", f'{self.__class__.__name__} ' + 
               f'transformed {key} to {attribute}')

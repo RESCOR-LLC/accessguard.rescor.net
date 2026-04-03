@@ -13,18 +13,24 @@ explosion while maintaining security boundaries.
 # Install dependencies
 pip install -r requirements.txt
 
-# Run against the current AWS account (deterministic analysis, no AI)
-python3 tests/test_live.py
+# Scan the current AWS account (deterministic analysis, no AI)
+python3 src/cli.py
 
-# Run with AI-powered consolidation recommendations
+# Scan with AI-powered consolidation recommendations
 export ANTHROPIC_API_KEY=sk-ant-...
-python3 tests/test_live.py --ai
+python3 src/cli.py --ai
 
-# Run with a specific model and threshold
-python3 tests/test_live.py --ai --model=opus --threshold=0.60
+# Scan all accounts in an AWS Organization
+python3 src/cli.py --org --ai
+
+# Scan specific accounts
+python3 src/cli.py --accounts 111111111111,222222222222 --ai
+
+# Customize the model and threshold
+python3 src/cli.py --ai --model=opus --threshold=0.60
 ```
 
-Reports are written to the current directory:
+Reports are written to the current directory (override with `--output`):
 - `accessguard-report-YYYY-MM-DD.html` — self-contained HTML report
 - `accessguard-report-YYYY-MM-DD.json` — machine-readable JSON
 
@@ -46,9 +52,10 @@ Reports are written to the current directory:
 
 ```
 src/                    Application source
-  accessGuard.py        CLI/Lambda entry point (original pipeline)
+  cli.py                Primary CLI entry point
+  accessGuard.py        Lambda/pipeline entry point (DynamoDB/S3/SSM)
   accessGuardClasses.py IAM entity classes and similarity detection
-  commonClasses.py      Shared AWS utilities
+  commonClasses.py      AWS utilities (stripped to used classes only)
   roleAnalyzer.py       Jaccard clustering + AI consolidation analysis
   reportGenerator.py    HTML/JSON report generation
   modelProvider.py      Abstract LLM provider (Anthropic implementation)
