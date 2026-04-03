@@ -16,6 +16,9 @@ import traceback
 import boto3
 import commonClasses as cc
 import accessGuardClasses as agc
+import roleAnalyzer as ra
+import reportGenerator as rg
+from modelProvider import AnthropicProvider
 
 # Lambdas to obtain elements of a botocore ClientError
 error = lambda thrown : thrown.get("Error", {}).get("Code", None)
@@ -41,13 +44,17 @@ _PARAMETERS =  re.sub(r'[\s\n]+', " ", """
       }
   """).strip()
 
-# Define options 
+# Define options
 cc.OptionsObject._PROPERTIES = [
     cc.OptionDescriptor("ssoRegion", None, None),
     cc.OptionDescriptor("defaultRegion", None, None),
     cc.OptionDescriptor("debug", False, None),
     cc.OptionDescriptor("output", None, None),
-    cc.OptionDescriptor("configuration", None, None)
+    cc.OptionDescriptor("configuration", None, None),
+    cc.OptionDescriptor("model", "sonnet", None),
+    cc.OptionDescriptor("threshold", 0.70, None),
+    cc.OptionDescriptor("noAi", False, None),
+    cc.OptionDescriptor("format", "html", None),
   ]
 ################################################################################
 # 
@@ -291,13 +298,50 @@ def processAccounts (options=None):
 
     items.append(item)
 
-  cc.emit("240080", "i", f'identified {len(items)} similar entities ' + 
+  cc.emit("240080", "i", f'identified {len(items)} similar entities ' +
     f'in {accounts} accounts')
 
-  # Write results 
-  writer = OutputBroker(options.output, dataSource=client, 
-    reportDate=reportDate, parameters=parameters, catalogEntries=results, 
+  # Write results to S3/DynamoDB (legacy output)
+  writer = OutputBroker(options.output, dataSource=client,
+    reportDate=reportDate, parameters=parameters, catalogEntries=results,
     similarityEntries=items).write()
+
+  # --- Role Analysis (Phase 2) ---
+  model_provider = None
+  if not getattr(options, 'noAi', False):
+    try:
+      model_id = getattr(options, 'model', 'sonnet')
+      model_provider = AnthropicProvider(model_id=model_id)
+      cc.emit("240082", "i", f'AI analysis enabled: {model_provider}')
+    except EnvironmentError as e:
+      cc.emit("240083", "w", f'AI analysis disabled: {e}')
+
+  threshold = float(getattr(options, 'threshold', 0.70))
+  analyzer = ra.RoleAnalyzer(threshold=threshold, model_provider=model_provider)
+  analyzer.add_entities(results)
+  analysis = analyzer.analyze()
+
+  # --- Report Generation (Phase 3) ---
+  catalog_dicts = [r.asDict() for r in results]
+  similarity_dicts = [s.asDict() for s in items]
+  report_format = getattr(options, 'format', 'html')
+
+  # Write local reports for each non-cloud output stream
+  for stream in options.output:
+    if stream.lower() in ('s3', 'dynamodb'):
+      continue
+
+    output_dir = stream if stream != '.' else '.'
+
+    if report_format in ('html', 'all'):
+      html_path = f'{output_dir}/accessguard-report-{reportDate}.html'
+      html = rg.generate_html(catalog_dicts, similarity_dicts, analysis, reportDate)
+      rg.write_report(html_path, html, 'HTML')
+
+    if report_format in ('json', 'all'):
+      json_path = f'{output_dir}/accessguard-report-{reportDate}.json'
+      json_content = rg.generate_json(catalog_dicts, similarity_dicts, analysis, reportDate)
+      rg.write_report(json_path, json_content, 'JSON')
 
 ################################################################################
 # 
@@ -403,18 +447,28 @@ if __name__ == "__main__":
     cc.emit("240140", "i", f'AccessGuard invoked as a command')
 
     # Process arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--output", "-o", required=True, 
+    parser = argparse.ArgumentParser(
+        description="AccessGuard — AWS IAM role engineering and analysis tool")
+    parser.add_argument("--output", "-o", required=True,
         action="append", dest="output",
         type=str, help="Local file path, 's3', or 'dynamodb' for output")
     parser.add_argument("--default-region", "-r", dest="defaultRegion",
         default=None, help="Default region to use where a region is needed")
-    parser.add_argument("--sso-region", "-s", dest="ssoRegion",  
+    parser.add_argument("--sso-region", "-s", dest="ssoRegion",
         default=None, help="Region for SSO operations")
-    parser.add_argument("--configuration", "-c", type=str, 
+    parser.add_argument("--configuration", "-c", type=str,
         help="Local path or S3 path containing initialization CSV")
-    parser.add_argument("--debug", "-d", action="store_true", 
+    parser.add_argument("--debug", "-d", action="store_true",
         default=False, help="Provide more debugging details")
+    parser.add_argument("--model", "-m", type=str, default="sonnet",
+        help="AI model for analysis: opus, sonnet (default), haiku, or full model ID")
+    parser.add_argument("--threshold", "-t", type=float, default=0.70,
+        help="Jaccard similarity threshold for clustering (0.0-1.0, default: 0.70)")
+    parser.add_argument("--no-ai", action="store_true", dest="noAi",
+        default=False, help="Run deterministic analysis only (no AI API calls)")
+    parser.add_argument("--format", "-f", type=str, default="html",
+        choices=["html", "json", "csv", "all"],
+        help="Report format for local output (default: html)")
 
     arguments = parser.parse_args()
     
