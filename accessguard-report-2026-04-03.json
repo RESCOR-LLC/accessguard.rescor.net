@@ -1,0 +1,1849 @@
+{
+  "reportDate": "2026-04-03T18:22:51.651923",
+  "catalog": [
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "f87fdd01ea313b195f29e0315980305565d135bf8f6a8764541a80a77c4b9397",
+      "account": "465262564586",
+      "type": "User",
+      "name": "arob",
+      "arn": "arn:aws:iam::465262564586:user/arob",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "AllowArobSandboxAccess": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "sts:AssumeRole",
+              "Resource": "arn:aws:iam::319279229854:role/OrganizationAdministratorRole"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "61018d6482fe1787e46181d411d9c4b338c687a5d974c19c62fe02da5264b087",
+      "account": "465262564586",
+      "type": "User",
+      "name": "onsip",
+      "arn": "arn:aws:iam::465262564586:user/onsip",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "469d6284fb89f558baaa257a3aec061e075b0b43495123847606e2ff51e805f3",
+      "account": "465262564586",
+      "type": "User",
+      "name": "ses-smtp-titanium",
+      "arn": "arn:aws:iam::465262564586:user/ses-smtp-titanium",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonSESFullAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "25588ffbb287b41060ecc4e20e9e3ab0944b002dec90fcfb63da7fe89a953e1a",
+      "account": "465262564586",
+      "type": "Group",
+      "name": "wheel",
+      "arn": "arn:aws:iam::465262564586:group/wheel",
+      "description": null,
+      "members": [
+        "arob"
+      ],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "d2cb58bf0ad354da5d12485be92b8ae80712678778f8587b084281625008f4fe",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AccessAnalyzerMonitorServiceRole_H2HMWRD42N",
+      "arn": "arn:aws:iam::465262564586:role/AccessAnalyzerMonitorServiceRole_H2HMWRD42N",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AccessAnalyzerMonitorServicePolicy_QV024KXR45"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "3cd72dbee091bc60cd715db41017aa29c1e934d0ec1233a86123fd995f2e4e1d",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AccessAnalyzerMonitorServiceRole_S10MSDD799",
+      "arn": "arn:aws:iam::465262564586:role/AccessAnalyzerMonitorServiceRole_S10MSDD799",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AccessAnalyzerMonitorServicePolicy_C9O22QW7JR"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "c24b0ca4efb8e6f19f0c0178eb78555c04a0236bff9545ce7371e83cd6e46942",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-AppRole1",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-S3ReadOnly",
+        "AGTest-EC2Describe",
+        "AGTest-CloudWatchLogs"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "d30c7642b55fc03cf9485b73f8e271c5e74a10d038a9fc38ca1b959bbe35ac54",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-AppRole2",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole2",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-S3ReadOnly",
+        "AGTest-EC2Describe",
+        "AGTest-CloudWatchLogs"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "9050309301d95310c24bf74c7ae28de13ce1b190e674152681d2eaebf0a311ab",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-DataRole1",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole1",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-RDSReadOnly",
+        "AGTest-S3ReadOnly",
+        "AGTest-CloudWatchLogs"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "11dff6ae7d9601d6e9dff28e88b80f6c27535fb6214ba3effd31d0b4cadb7b95",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-DataRole2",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-RDSReadOnly",
+        "AGTest-S3ReadOnly",
+        "AGTest-EC2Describe",
+        "AGTest-CloudWatchLogs"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "bc41de8bdbaa6ea145ed1ed90d4ca6644480c8ccc540746535018c6d8d8ab4f1",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-EmptyRole",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-EmptyRole",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "d9a80335ea8d56f3bd9973447943230905d2b613be24790ccaab754ba0e9456e",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-InlineRole1",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-InlineRole1",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "AGTestInlineRole1DefaultPolicy7312CC83": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:ListBucket"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "11e18ae4b99bc89ee1ecd2e6a1d287ed0669541051f9cde8f25f460b2fe854ed",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-InlineRole2",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-InlineRole2",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "AGTestInlineRole2DefaultPolicy923DBF6B": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:ListBucket"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "806b0d8026b90391fc2b590d444ed9ef963642dd04459001485d35dc1b59620b",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-LambdaExec",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-LambdaExec",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-SQSFullAccess",
+        "AGTest-LambdaFullAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "679010a40dd20cb105d301a7b20bfabe577280a965016b08d0a4ca3c9fcfba87",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-MixedRole",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-MixedRole",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-S3ReadOnly",
+        "AGTest-IAMReadOnly"
+      ],
+      "policy": {
+        "AGTestMixedRoleDefaultPolicyABB84154": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "0835e43d38c51b3f37cd5574c207a4fefe6b7ac948829dc54388e6d684e78e0c",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-ReadOnlyRole",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-ReadOnlyRole",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AGTest-S3ReadOnly",
+        "AGTest-EC2Describe"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "752f483ac8a0bc613bec57b02928930be3349e7e87d86d1795c47601565d144e",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AGTest-RunnerRole",
+      "arn": "arn:aws:iam::465262564586:role/AGTest-RunnerRole",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "IAMRead": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "iam:Get*",
+                "iam:List*",
+                "sts:GetCallerIdentity",
+                "sts:AssumeRole"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        },
+        "SSORead": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "sso-admin:ListInstances",
+                "sso-admin:ListPermissionSets",
+                "sso-admin:DescribePermissionSet",
+                "sso-admin:ListManagedPoliciesInPermissionSet",
+                "sso-admin:GetInlinePolicyForPermissionSet"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "17226ad45226cfc55e6c9eacdc0f6fa61c627d9480b6eec3f953c3971d6337d6",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AmazonWamMarketplace_Default_Role",
+      "arn": "arn:aws:iam::465262564586:role/AmazonWamMarketplace_Default_Role",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "WamMarketplaceAccess": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "catalog-admin:Describe*",
+                "catalog-admin:Get*",
+                "catalog-admin:Search*",
+                "catalog-admin:List*",
+                "catalog-admin:CreateListing",
+                "catalog-admin:UpdateListing",
+                "catalog-admin:DeleteListing",
+                "catalog-user:SimulateView*",
+                "catalog-user:SimulateGet*",
+                "catalog-user:SimulateBrowse*"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "7d785742a2ea1fb7ce3cc731045328edfd08fc82584128f4358d4ec4d737a027",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "aws-elasticbeanstalk-ec2-role",
+      "arn": "arn:aws:iam::465262564586:role/aws-elasticbeanstalk-ec2-role",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSElasticBeanstalkMulticontainerDocker",
+        "AWSElasticBeanstalkWebTier",
+        "AWSElasticBeanstalkWorkerTier"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "f311c74823e2fe55e7bbdeb8318e2fe5fd5bd3c3cb8820b87cc0f6b8cbe9ea34",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "aws-elasticbeanstalk-service-role",
+      "arn": "arn:aws:iam::465262564586:role/aws-elasticbeanstalk-service-role",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSElasticBeanstalkEnhancedHealth",
+        "AWSElasticBeanstalkService"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "f9217746b22326869555def951a55c3ece5e3da6af59cd71916f9210ff967e65",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSControlTowerAdmin",
+      "arn": "arn:aws:iam::465262564586:role/AWSControlTowerAdmin",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSControlTowerAdminPolicy",
+        "AWSControlTowerServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "67d88b0ee1a637b38e470049cc7687a3b17e0d4ccc68b354f45046e1064a77af",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSControlTowerCloudTrailRole",
+      "arn": "arn:aws:iam::465262564586:role/AWSControlTowerCloudTrailRole",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSControlTowerCloudTrailRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "5c2582468788a845334e92bd9f260aef192d037ab52cb55c4d0cab77687008f9",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSControlTowerStackSetRole",
+      "arn": "arn:aws:iam::465262564586:role/AWSControlTowerStackSetRole",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSControlTowerStackSetRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "04806f5d430286d6048ff7d916b78d08dc595eaee717a62f9f02ffb45c77a90c",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "58a2fcd1daf301462f2c70815f0edcf494dc658e8c843126976017d03a53198e",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_AWSPowerUserAccess_ec9b15c453470b72",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSPowerUserAccess_ec9b15c453470b72",
+      "description": null,
+      "members": [],
+      "managed": [
+        "PowerUserAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "9788aadd1e23231b414a690b2ca5ee784b3bb4678c1a3ee6ef4dc691b75137fb",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_AWSReadOnlyAccess_34c195cf07c06617",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSReadOnlyAccess_34c195cf07c06617",
+      "description": null,
+      "members": [],
+      "managed": [
+        "ViewOnlyAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "bf7ab4120a43cdefa8e61f0ff768808053f82a05ca471fbb5a89ea67fc97e311",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_AWSServiceCatalogAdminFullAccess_226faedcb0450dc9",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSServiceCatalogAdminFullAccess_226faedcb0450dc9",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSServiceCatalogAdminFullAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "e3fc711fa2ca8c976930731865f681c0b14d2a23d67dff282d9322f7ed5fe0ec",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_AWSServiceCatalogEndUserAccess_bcdfc69467733e01",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSServiceCatalogEndUserAccess_bcdfc69467733e01",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSServiceCatalogEndUserFullAccess"
+      ],
+      "policy": {
+        "AwsSSOInlinePolicy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "AWSControlTowerAccountFactoryAccess",
+              "Effect": "Allow",
+              "Action": [
+                "sso:GetProfile",
+                "sso:CreateProfile",
+                "sso:UpdateProfile",
+                "sso:AssociateProfile",
+                "sso:CreateApplicationInstance",
+                "sso:GetSSOStatus",
+                "sso:GetTrust",
+                "sso:CreateTrust",
+                "sso:UpdateTrust",
+                "sso:GetPeregrineStatus",
+                "sso:GetApplicationInstance",
+                "sso:ListDirectoryAssociations",
+                "sso:ListPermissionSets",
+                "sso:GetPermissionSet",
+                "sso:ProvisionApplicationInstanceForAWSAccount",
+                "sso:ProvisionApplicationProfileForAWSAccountInstance",
+                "sso:ProvisionSAMLProvider",
+                "sso:ListProfileAssociations",
+                "sso-directory:ListMembersInGroup",
+                "sso-directory:SearchGroups",
+                "sso-directory:SearchGroupsWithGroupName",
+                "sso-directory:SearchUsers",
+                "sso-directory:CreateUser",
+                "sso-directory:DescribeGroups",
+                "sso-directory:DescribeDirectory",
+                "sso-directory:GetUserPoolInfo",
+                "controltower:CreateManagedAccount",
+                "controltower:DescribeManagedAccount",
+                "controltower:DeregisterManagedAccount",
+                "s3:GetObject",
+                "organizations:describeOrganization",
+                "sso:DescribeRegisteredRegions"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "9e10c488554085412894b356685c3eadd0c63f4a6e195bab2d486808a5d8ff97",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSReservedSSO_RescorEmailAdministrator_a28b78c70e67953a",
+      "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_RescorEmailAdministrator_a28b78c70e67953a",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonWorkMailFullAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "b6a96e26c513849479759cf8850dae0d91966c636030bc20df5eba76234c61f0",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAmazonCognitoIdpEmailService",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAmazonCognitoIdpEmailService",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonCognitoIdpEmailServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "8d4cffc8c6df38fc267a1428b321b1fcc04e0255a4821c76aff7814d66fa16af",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAmazonElasticFileSystem",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAmazonElasticFileSystem",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonElasticFileSystemServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "36b997a4e71f202971ad1cef328313b884fc713b0a3775dc3b0fc8e092e0bbb8",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAmazonGuardDuty",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAmazonGuardDuty",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonGuardDutyServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "892efa7d9572c86c450603c25cefb9ed6185e3edda2cbdf964160d578108975a",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAmazonMacie",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAmazonMacie",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonMacieServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "1e90e8523f233e0bb1cfdb78bb93bb1ada54e5abef3d48bbf1260c00eaf41179",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAmazonWorkMailEvents",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAmazonWorkMailEvents",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AmazonWorkMailEventsServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "c82f4d5680353b3ac90630f58daea80ca393e4140c44d16329ccf37c68c45330",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAPIGateway",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAPIGateway",
+      "description": null,
+      "members": [],
+      "managed": [
+        "APIGatewayServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "7165a1cd1aa9df116d85adfa9290b62bc2812691a4e172ba25ba21f9e55015ff",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAutoScaling",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAutoScaling",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AutoScalingServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "32622572e84468ae3c21780c8c6686ffcbe6538738af2846256c3ae30e4f8c8b",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForAwsUserNotifications",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForAwsUserNotifications",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSUserNotificationsServiceLinkedRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "0c5bb4cccc289b2fad8dfbf920bb4d2b49aebf02cf96062801a95b837003734e",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForBackup",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForBackup",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSBackupServiceLinkedRolePolicyForBackup"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "e03812d5c229591759f4f648da5ea0167fe25ada51d3341e3e1966e2d42f758b",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForCloudFormationStackSetsOrgAdmin",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin",
+      "description": null,
+      "members": [],
+      "managed": [
+        "CloudFormationStackSetsOrgAdminServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "b178949c3ba21f573991791b489d4977d807fc6d3262779899612d577b740519",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForCloudFrontLogger",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForCloudFrontLogger",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSCloudFrontLogger"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "8338fb62f48e328b152def4a0f364c5466452a248ee251a01d845b5a333a13fe",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForCloudHSM",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForCloudHSM",
+      "description": null,
+      "members": [],
+      "managed": [
+        "CloudHSMServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "bb1fb529301538c5073cd016770a08bf0b76a3d0ba7670d254b5e5dd9568ec3b",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForCostOptimizationHub",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForCostOptimizationHub",
+      "description": null,
+      "members": [],
+      "managed": [
+        "CostOptimizationHubServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "cae9fd51db3878ca39202082b9ae0a063e1d57eede1c3644359438e9d0afe4ea",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForElasticLoadBalancing",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForElasticLoadBalancing",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSElasticLoadBalancingServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "7da2839628980f4d23b813a48075b706dfe0d094133f7c1411171e24df599008",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForLambdaReplicator",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForLambdaReplicator",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSLambdaReplicator"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "bf73f16494eea0eb08b2452555d92424f64047da759d044a9a49c57359de27f2",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForNetworkManager",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForNetworkManager",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSNetworkManagerServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "550cd48c1296d1b0d89a6664ee4d9d5f47e388a2f7d59dc468e156992fa15481",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForOrganizations",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForOrganizations",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSOrganizationsServiceTrustPolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "ec9ee377c2cd2a32d2dfec0a23f4cf3b5af3e331cc78b48fe5f2416ff30cdc79",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForProfile_a0b06ec505034dc995f7028de775d694",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForProfile_a0b06ec505034dc995f7028de775d694",
+      "description": null,
+      "members": [],
+      "managed": [
+        "CustomerProfilesServiceLinkedRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "71add3760a34f690898d601c7cc8c48ab252c1465012e1d1c3d152e646b059db",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForResourceExplorer",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForResourceExplorer",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSResourceExplorerServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "4083e0b431507605e78307632bbe13e0e691dc296b44601344a1a0bd86f04796",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForRolesAnywhere",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForRolesAnywhere",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSRolesAnywhereServicePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "1222100ac3f3878eed919c89dafb2041f9f789f77b11ce66d297a45b1c5c2b60",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForSSO",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForSSO",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSSSOServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "a68db337d7a8013f68fef991050dec73944473cae64884f888b0e91ffb1c95f7",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForSupport",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForSupport",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSSupportServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "7a37197fc14092c2f1ec7e7c7e3eab14c7f0c8a6835bd0c5d54cd7ae9ac2640f",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "AWSServiceRoleForTrustedAdvisor",
+      "arn": "arn:aws:iam::465262564586:role/AWSServiceRoleForTrustedAdvisor",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSTrustedAdvisorServiceRolePolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "3c099416541fff2ae25d59c8887e42d8d64ec39a4f3ddc3e882b2812f3e34523",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+      "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "a1abeb406f13ebdcd382ee7f5c851dab8214e29d19502b64af47944faf002b17",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "cdk-hnb659fds-deploy-role-465262564586-us-east-1",
+      "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-deploy-role-465262564586-us-east-1",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "default": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "cloudformation:CreateChangeSet",
+                "cloudformation:DeleteChangeSet",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:DescribeStacks",
+                "cloudformation:DescribeEvents",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:CreateStack",
+                "cloudformation:UpdateStack",
+                "cloudformation:RollbackStack",
+                "cloudformation:ContinueUpdateRollback"
+              ],
+              "Resource": "*",
+              "Effect": "Allow",
+              "Sid": "CloudFormationPermissions"
+            },
+            {
+              "Condition": {
+                "StringNotEquals": {
+                  "s3:ResourceAccount": "465262564586"
+                }
+              },
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:Abort*",
+                "s3:DeleteObject*",
+                "s3:PutObject*"
+              ],
+              "Resource": "*",
+              "Effect": "Allow",
+              "Sid": "PipelineCrossAccountArtifactsBucket"
+            },
+            {
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": "s3.us-east-1.amazonaws.com"
+                }
+              },
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Resource": "*",
+              "Effect": "Allow",
+              "Sid": "PipelineCrossAccountArtifactsKey"
+            },
+            {
+              "Action": "iam:PassRole",
+              "Resource": "arn:aws:iam::465262564586:role/cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+              "Effect": "Allow"
+            },
+            {
+              "Action": [
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:GetTemplate",
+                "cloudformation:DeleteStack",
+                "cloudformation:UpdateTerminationProtection",
+                "sts:GetCallerIdentity",
+                "cloudformation:GetTemplateSummary",
+                "cloudformation:GetHookResult"
+              ],
+              "Resource": "*",
+              "Effect": "Allow",
+              "Sid": "CliPermissions"
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Resource": [
+                "arn:aws:s3:::cdk-hnb659fds-assets-465262564586-us-east-1",
+                "arn:aws:s3:::cdk-hnb659fds-assets-465262564586-us-east-1/*"
+              ],
+              "Effect": "Allow",
+              "Sid": "CliStagingBucket"
+            },
+            {
+              "Action": [
+                "ssm:GetParameter",
+                "ssm:GetParameters"
+              ],
+              "Resource": [
+                "arn:aws:ssm:us-east-1:465262564586:parameter/cdk-bootstrap/hnb659fds/version"
+              ],
+              "Effect": "Allow",
+              "Sid": "ReadVersion"
+            },
+            {
+              "Action": [
+                "cloudformation:CreateStackRefactor",
+                "cloudformation:DescribeStackRefactor",
+                "cloudformation:ExecuteStackRefactor",
+                "cloudformation:ListStackRefactorActions",
+                "cloudformation:ListStackRefactors",
+                "cloudformation:ListStacks"
+              ],
+              "Resource": "*",
+              "Effect": "Allow",
+              "Sid": "Refactor"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "e5d2710a6491455158f066e4e4a5ed61540320d3c5fe88f990b49b3e2b780585",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "cdk-hnb659fds-file-publishing-role-465262564586-us-east-1",
+      "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-file-publishing-role-465262564586-us-east-1",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "cdk-hnb659fds-file-publishing-role-default-policy-465262564586-us-east-1": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Condition": {
+                "StringEquals": {
+                  "aws:ResourceAccount": [
+                    "465262564586"
+                  ]
+                }
+              },
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:GetEncryptionConfiguration",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Resource": [
+                "arn:aws:s3:::cdk-hnb659fds-assets-465262564586-us-east-1",
+                "arn:aws:s3:::cdk-hnb659fds-assets-465262564586-us-east-1/*"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Resource": "arn:aws:kms:us-east-1:465262564586:key/AWS_MANAGED_KEY",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "49801796527e1efcc0ae852b7fed34aedd27e6b31078082a47386c86fbe08e13",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "cdk-hnb659fds-image-publishing-role-465262564586-us-east-1",
+      "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-image-publishing-role-465262564586-us-east-1",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "cdk-hnb659fds-image-publishing-role-default-policy-465262564586-us-east-1": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:DescribeRepositories",
+                "ecr:DescribeImages",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer"
+              ],
+              "Resource": "arn:aws:ecr:us-east-1:465262564586:repository/cdk-hnb659fds-container-assets-465262564586-us-east-1",
+              "Effect": "Allow"
+            },
+            {
+              "Action": [
+                "ecr:GetAuthorizationToken"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "25e9f4476500920ff314d5f53f95251c8198bcde808c78cfd0245e061975c888",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "cdk-hnb659fds-lookup-role-465262564586-us-east-1",
+      "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-lookup-role-465262564586-us-east-1",
+      "description": null,
+      "members": [],
+      "managed": [
+        "ReadOnlyAccess"
+      ],
+      "policy": {
+        "LookupRolePolicy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "kms:Decrypt"
+              ],
+              "Resource": "*",
+              "Effect": "Deny",
+              "Sid": "DontReadSecrets"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "89ee864a54b5390bd3c6705ff6fd42e02d4c67d42b21ac78aed72687faca3349",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "MasterSetup_Role",
+      "arn": "arn:aws:iam::465262564586:role/MasterSetup_Role",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "231a55d1f84b458d874dade390deb8238c6c587193168a437b5dbb063cf0805f",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "pinpoint-events",
+      "arn": "arn:aws:iam::465262564586:role/pinpoint-events",
+      "description": null,
+      "members": [],
+      "managed": [
+        "pinpoint-email-ers-"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "c71080acfd136de2d68dd9f44c3db7279b6321edf547ff04038944946568b2cc",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "RescorApplicationAccessRole",
+      "arn": "arn:aws:iam::465262564586:role/RescorApplicationAccessRole",
+      "description": null,
+      "members": [],
+      "managed": [
+        "RescorApplicationAccessPolicy"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "6da6c4b0826f2979145fc21aaff8b5d0d9830504d1d95c3b2f45b453da0f9fb1",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "RescorCloudAdministrator",
+      "arn": "arn:aws:iam::465262564586:role/RescorCloudAdministrator",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "9557892a9d84f2f70d18eb1b9459bff5b9a3f8400115f556315a0891425b30bb",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "RescorOrganizationAdministrator",
+      "arn": "arn:aws:iam::465262564586:role/RescorOrganizationAdministrator",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AdministratorAccess"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "8dbd85a25ae59931919b6a0dcaa910d6e77dffc5d131227d5779f661f2b04876",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "webReturnIndex-role-uo233zby",
+      "arn": "arn:aws:iam::465262564586:role/webReturnIndex-role-uo233zby",
+      "description": null,
+      "members": [],
+      "managed": [
+        "AWSLambdaBasicExecutionRole-1482d031-1e99-4177-97c1-2d875f3c9f17"
+      ],
+      "policy": {}
+    },
+    {
+      "reportDate": "2026-04-03T18:22:51.651923",
+      "id": "a75e81f6389a707bfbd17fa0fa016c4485ca0b46445b09a01e8abe5ea830f910",
+      "account": "465262564586",
+      "type": "Role",
+      "name": "WorkMailExportRole",
+      "arn": "arn:aws:iam::465262564586:role/WorkMailExportRole",
+      "description": null,
+      "members": [],
+      "managed": [],
+      "policy": {
+        "WorkMailExportPolicy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:*",
+              "Resource": [
+                "arn:aws:s3:::rescor-workmail-export",
+                "arn:aws:s3:::rescor-workmail-export/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey",
+                "kms:GenerateDataKeyWithoutPlaintext",
+                "kms:ReEncrypt*",
+                "kms:DescribeKey"
+              ],
+              "Resource": "arn:aws:kms:us-east-1:465262564586:key/9f0016b4-8423-48e0-a63a-becbfbf2fe9d"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "similarities": [
+    {
+      "similarity": "Managed Policies",
+      "by": [
+        "AdministratorAccess"
+      ],
+      "entities": [
+        "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+        "arn:aws:iam::465262564586:role/MasterSetup_Role",
+        "arn:aws:iam::465262564586:role/RescorCloudAdministrator",
+        "arn:aws:iam::465262564586:role/RescorOrganizationAdministrator",
+        "arn:aws:iam::465262564586:role/cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+        "arn:aws:iam::465262564586:group/wheel"
+      ]
+    },
+    {
+      "similarity": "Managed Policies",
+      "by": [
+        "AGTest-S3ReadOnly",
+        "AGTest-EC2Describe",
+        "AGTest-CloudWatchLogs"
+      ],
+      "entities": [
+        "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+        "arn:aws:iam::465262564586:role/AGTest-AppRole2"
+      ]
+    },
+    {
+      "similarity": "Inline Policies",
+      "by": {
+        "AGTestInlineRole1DefaultPolicy7312CC83": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:ListBucket"
+              ],
+              "Resource": "*",
+              "Effect": "Allow"
+            }
+          ]
+        }
+      },
+      "entities": [
+        "arn:aws:iam::465262564586:role/AGTest-InlineRole1",
+        "arn:aws:iam::465262564586:role/AGTest-InlineRole2"
+      ]
+    }
+  ],
+  "analysis": {
+    "entityCount": 64,
+    "threshold": 0.7,
+    "model": "Anthropic(claude-sonnet-4-6)",
+    "clusters": [
+      {
+        "entities": [
+          {
+            "name": "wheel",
+            "arn": "arn:aws:iam::465262564586:group/wheel",
+            "account": "465262564586",
+            "entityType": "Group",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+            "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "MasterSetup_Role",
+            "arn": "arn:aws:iam::465262564586:role/MasterSetup_Role",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+            "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "RescorCloudAdministrator",
+            "arn": "arn:aws:iam::465262564586:role/RescorCloudAdministrator",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "RescorOrganizationAdministrator",
+            "arn": "arn:aws:iam::465262564586:role/RescorOrganizationAdministrator",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AdministratorAccess"
+            ],
+            "inlinePolicyNames": []
+          }
+        ],
+        "commonPolicies": [
+          "AdministratorAccess"
+        ],
+        "allPolicies": [
+          "AdministratorAccess"
+        ],
+        "clusterSize": 6
+      },
+      {
+        "entities": [
+          {
+            "name": "AGTest-AppRole1",
+            "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AGTest-CloudWatchLogs",
+              "AGTest-EC2Describe",
+              "AGTest-S3ReadOnly"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "AGTest-AppRole2",
+            "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole2",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AGTest-CloudWatchLogs",
+              "AGTest-EC2Describe",
+              "AGTest-S3ReadOnly"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "AGTest-DataRole1",
+            "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole1",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AGTest-CloudWatchLogs",
+              "AGTest-RDSReadOnly",
+              "AGTest-S3ReadOnly"
+            ],
+            "inlinePolicyNames": []
+          },
+          {
+            "name": "AGTest-DataRole2",
+            "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+            "account": "465262564586",
+            "entityType": "Role",
+            "managedPolicies": [
+              "AGTest-CloudWatchLogs",
+              "AGTest-EC2Describe",
+              "AGTest-RDSReadOnly",
+              "AGTest-S3ReadOnly"
+            ],
+            "inlinePolicyNames": []
+          }
+        ],
+        "commonPolicies": [
+          "AGTest-CloudWatchLogs",
+          "AGTest-S3ReadOnly"
+        ],
+        "allPolicies": [
+          "AGTest-CloudWatchLogs",
+          "AGTest-EC2Describe",
+          "AGTest-RDSReadOnly",
+          "AGTest-S3ReadOnly"
+        ],
+        "clusterSize": 4
+      }
+    ],
+    "clusterCount": 2,
+    "subsets": [
+      {
+        "subset": {
+          "name": "AGTest-AppRole1",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-DataRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-RDSReadOnly"
+        ]
+      },
+      {
+        "subset": {
+          "name": "AGTest-AppRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-DataRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-RDSReadOnly"
+        ]
+      },
+      {
+        "subset": {
+          "name": "AGTest-DataRole1",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole1",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-DataRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-EC2Describe"
+        ]
+      },
+      {
+        "subset": {
+          "name": "AGTest-ReadOnlyRole",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-ReadOnlyRole",
+          "policies": [
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-AppRole1",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-CloudWatchLogs"
+        ]
+      },
+      {
+        "subset": {
+          "name": "AGTest-ReadOnlyRole",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-ReadOnlyRole",
+          "policies": [
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-AppRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-CloudWatchLogs"
+        ]
+      },
+      {
+        "subset": {
+          "name": "AGTest-ReadOnlyRole",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-ReadOnlyRole",
+          "policies": [
+            "AGTest-EC2Describe",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "superset": {
+          "name": "AGTest-DataRole2",
+          "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+          "policies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ]
+        },
+        "additionalInSuperset": [
+          "AGTest-CloudWatchLogs",
+          "AGTest-RDSReadOnly"
+        ]
+      }
+    ],
+    "subsetCount": 6,
+    "aiRecommendations": [
+      {
+        "cluster": {
+          "entities": [
+            {
+              "name": "wheel",
+              "arn": "arn:aws:iam::465262564586:group/wheel",
+              "account": "465262564586",
+              "entityType": "Group",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+              "arn": "arn:aws:iam::465262564586:role/cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "MasterSetup_Role",
+              "arn": "arn:aws:iam::465262564586:role/MasterSetup_Role",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+              "arn": "arn:aws:iam::465262564586:role/AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "RescorCloudAdministrator",
+              "arn": "arn:aws:iam::465262564586:role/RescorCloudAdministrator",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "RescorOrganizationAdministrator",
+              "arn": "arn:aws:iam::465262564586:role/RescorOrganizationAdministrator",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AdministratorAccess"
+              ],
+              "inlinePolicyNames": []
+            }
+          ],
+          "commonPolicies": [
+            "AdministratorAccess"
+          ],
+          "allPolicies": [
+            "AdministratorAccess"
+          ],
+          "clusterSize": 6
+        },
+        "analysis": {
+          "recommendations": [
+            {
+              "action": "REVIEW",
+              "targetRole": "AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+              "mergeRoles": [],
+              "additionalPermissions": [],
+              "readOnlyAdditions": false,
+              "risk": "HIGH",
+              "riskRationale": "All six entities carry AdministratorAccess (Action: *, Resource: *), granting unrestricted access to every AWS service including IAM, KMS, STS, and Organizations. Consolidation is technically trivial but the proliferation itself is the security concern \u2014 each entity represents an independent blast-radius vector for full account compromise.",
+              "rationale": "All entities are policy-identical, each bearing only AdministratorAccess. Rather than a straightforward merge, this cluster demands a purpose audit: most of these roles appear to duplicate administrative access without differentiated trust policies, session constraints, or permission boundaries. Before consolidating, each entity's actual usage, trust relationship, and originating use case must be validated. Roles that are unused or redundant should be deleted outright, not merged."
+            },
+            {
+              "action": "KEEP_SEPARATE",
+              "targetRole": "cdk-hnb659fds-cfn-exec-role-465262564586-us-east-1",
+              "mergeRoles": [],
+              "additionalPermissions": [],
+              "readOnlyAdditions": false,
+              "risk": "HIGH",
+              "riskRationale": "CDK CloudFormation execution roles are scoped by trust policy to CloudFormation service principals and are managed by CDK bootstrap. Merging this into a human or SSO role would break CDK deploy pipelines and conflate service-automation trust with human identity, violating separation of duties.",
+              "rationale": "This role is a CDK bootstrap artifact with a CloudFormation service trust relationship. It must remain isolated from human-assumable roles regardless of policy overlap. Recommend replacing AdministratorAccess with a scoped CDK execution policy to reduce blast radius of infrastructure deployments."
+            },
+            {
+              "action": "KEEP_SEPARATE",
+              "targetRole": "AWSReservedSSO_AWSAdministratorAccess_e7f467837752ec29",
+              "mergeRoles": [],
+              "additionalPermissions": [],
+              "readOnlyAdditions": false,
+              "risk": "HIGH",
+              "riskRationale": "AWSReservedSSO_ roles are managed by AWS IAM Identity Center and cannot be manually assumed or modified. Their trust policy is bound to the SSO SAML provider. Any attempt to merge other roles into this entity or redirect users to it from outside SSO is unsupported and would fail.",
+              "rationale": "AWS IAM Identity Center reserved roles are system-managed and exist only to surface permission sets assigned in the SSO console. They cannot be the target of manual role assumption or consolidation. Human admins should access the account exclusively through SSO. The existence of non-SSO admin roles (wheel, RescorCloudAdministrator, RescorOrganizationAdministrator, MasterSetup_Role) alongside SSO admin access suggests redundant privilege paths that bypass SSO governance."
+            },
+            {
+              "action": "CONSOLIDATE",
+              "targetRole": "RescorOrganizationAdministrator",
+              "mergeRoles": [
+                "RescorCloudAdministrator",
+                "MasterSetup_Role"
+              ],
+              "additionalPermissions": [],
+              "readOnlyAdditions": false,
+              "risk": "HIGH",
+              "riskRationale": "All three roles are policy-identical with AdministratorAccess. Consolidation adds no new permissions, but retaining AdministratorAccess on any human-assumable role is inherently HIGH risk. This consolidation reduces the number of full-admin blast-radius vectors from three to one.",
+              "rationale": "RescorCloudAdministrator, RescorOrganizationAdministrator, and MasterSetup_Role are semantically distinct by name but policy-identical. If all three serve human operators in the same account with no trust-policy differentiation, they are pure redundancy. Consolidate to a single break-glass or operational admin role, enforce MFA conditions and session duration limits in the trust policy, and route day-to-day access through the SSO permission set instead. MasterSetup_Role should be reviewed for whether it was a one-time bootstrap role that can now be deleted entirely."
+            },
+            {
+              "action": "REVIEW",
+              "targetRole": "wheel",
+              "mergeRoles": [],
+              "additionalPermissions": [],
+              "readOnlyAdditions": false,
+              "risk": "HIGH",
+              "riskRationale": "IAM Groups with AdministratorAccess grant full-account privileges to every group member. Group membership is often less audited than role assumption, making this a hidden privilege escalation path.",
+              "rationale": "The 'wheel' group is a Linux/Unix convention repurposed as an IAM group granting AdministratorAccess to its members. IAM users in this group gain admin rights without assuming a role, bypassing CloudTrail AssumeRole events and making activity harder to attribute. Best practice is to remove AdministratorAccess from the group, migrate members to role assumption (preferably via SSO), and deprecate the group. It should not be merged with roles but eliminated as an access pattern."
+            }
+          ],
+          "summary": "All six entities are policy-identical with AdministratorAccess, making technical consolidation trivial, but the real risk is the proliferation of six independent full-admin blast-radius vectors across different access patterns (SSO, CDK automation, direct group membership, and manual role assumption) \u2014 the priority action is to delete unused roles, enforce SSO as the sole human admin path, scope the CDK execution role, and reduce the three custom admin roles (RescorCloudAdministrator, RescorOrganizationAdministrator, MasterSetup_Role) to a single audited break-glass role with MFA and session constraints."
+        }
+      },
+      {
+        "cluster": {
+          "entities": [
+            {
+              "name": "AGTest-AppRole1",
+              "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole1",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AGTest-CloudWatchLogs",
+                "AGTest-EC2Describe",
+                "AGTest-S3ReadOnly"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "AGTest-AppRole2",
+              "arn": "arn:aws:iam::465262564586:role/AGTest-AppRole2",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AGTest-CloudWatchLogs",
+                "AGTest-EC2Describe",
+                "AGTest-S3ReadOnly"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "AGTest-DataRole1",
+              "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole1",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AGTest-CloudWatchLogs",
+                "AGTest-RDSReadOnly",
+                "AGTest-S3ReadOnly"
+              ],
+              "inlinePolicyNames": []
+            },
+            {
+              "name": "AGTest-DataRole2",
+              "arn": "arn:aws:iam::465262564586:role/AGTest-DataRole2",
+              "account": "465262564586",
+              "entityType": "Role",
+              "managedPolicies": [
+                "AGTest-CloudWatchLogs",
+                "AGTest-EC2Describe",
+                "AGTest-RDSReadOnly",
+                "AGTest-S3ReadOnly"
+              ],
+              "inlinePolicyNames": []
+            }
+          ],
+          "commonPolicies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-S3ReadOnly"
+          ],
+          "allPolicies": [
+            "AGTest-CloudWatchLogs",
+            "AGTest-EC2Describe",
+            "AGTest-RDSReadOnly",
+            "AGTest-S3ReadOnly"
+          ],
+          "clusterSize": 4
+        },
+        "analysis": {
+          "recommendations": [
+            {
+              "action": "CONSOLIDATE",
+              "targetRole": "AGTest-AppRole2",
+              "mergeRoles": [
+                "AGTest-AppRole1"
+              ],
+              "additionalPermissions": [],
+              "readOnlyAdditions": true,
+              "risk": "LOW",
+              "riskRationale": "AGTest-AppRole1 and AGTest-AppRole2 have identical managed policy sets (AGTest-CloudWatchLogs, AGTest-EC2Describe, AGTest-S3ReadOnly) and no inline policies. Merging introduces zero permission changes \u2014 the consolidated role is an exact duplicate of either source role.",
+              "rationale": "These two roles are functionally identical with 100% policy overlap and no inline policies differentiating them. Maintaining both creates unnecessary administrative overhead, doubles the audit surface, and provides no security boundary benefit. They should be collapsed into a single role; all principals currently assuming AGTest-AppRole1 should be redirected to AGTest-AppRole2 (or a renamed canonical role)."
+            },
+            {
+              "action": "REVIEW",
+              "targetRole": "AGTest-DataRole2",
+              "mergeRoles": [
+                "AGTest-DataRole1"
+              ],
+              "additionalPermissions": [
+                "AGTest-EC2Describe"
+              ],
+              "readOnlyAdditions": true,
+              "risk": "LOW",
+              "riskRationale": "The only permission AGTest-DataRole1 would gain upon merging into AGTest-DataRole2 is AGTest-EC2Describe, which is a read-only EC2 describe policy. No write, IAM, KMS, or other sensitive permissions are introduced.",
+              "rationale": "AGTest-DataRole1 and AGTest-DataRole2 share 3 of 4 policies (75% overlap: AGTest-CloudWatchLogs, AGTest-RDSReadOnly, AGTest-S3ReadOnly). The only delta is that AGTest-DataRole2 additionally holds AGTest-EC2Describe. Consolidation is worth reviewing \u2014 if the principals assuming AGTest-DataRole1 have no operational need to describe EC2 resources, the separation is justified and should be preserved. If EC2 describe access is benign or expected for the data workload, merging eliminates a redundant role at negligible risk."
+            },
+            {
+              "action": "KEEP_SEPARATE",
+              "targetRole": "AGTest-DataRole2",
+              "mergeRoles": [
+                "AGTest-AppRole2"
+              ],
+              "additionalPermissions": [
+                "AGTest-RDSReadOnly"
+              ],
+              "readOnlyAdditions": true,
+              "risk": "LOW",
+              "riskRationale": "The additional permission is RDS read-only; however, granting application roles access to database read endpoints without a confirmed need violates least-privilege even if the technical risk classification is low.",
+              "rationale": "Although the App roles (EC2Describe) and Data roles (RDSReadOnly) both share AGTest-CloudWatchLogs and AGTest-S3ReadOnly, they represent distinct functional boundaries \u2014 application-tier compute access vs. data-tier database access. Merging them would grant app principals RDS read access and data principals EC2 describe access without clear justification. These role families should remain separate to preserve the application/data trust boundary, even though all permissions involved are read-only."
+            }
+          ],
+          "summary": "The four roles reduce to two canonical role families \u2014 App (AppRole1/AppRole2 are identical and should be merged immediately) and Data (DataRole1/DataRole2 differ only by EC2Describe and warrant a brief review before consolidation) \u2014 yielding a potential reduction from 4 roles to 2 with no write or sensitive-service permissions introduced."
+        }
+      }
+    ]
+  }
+}

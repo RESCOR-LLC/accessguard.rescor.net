@@ -40,7 +40,7 @@ INLINE_S3_READ = {
 }
 
 INLINE_S3_READ_RENAMED = {
-    # Identical content to INLINE_S3_READ — tests canonicalization
+    # Identical content to INLINE_S3_READ -tests canonicalization
     "Version": "2012-10-17",
     "Statement": [{
         "Resource": "*",
@@ -132,7 +132,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-AppRole1",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_cw_logs, policy_ec2_describe],
-            description="Test role 1 — exact duplicate of AppRole2",
+            description="Test role 1 -exact duplicate of AppRole2",
         )
 
         iam.Role(
@@ -140,7 +140,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-AppRole2",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_cw_logs, policy_ec2_describe],
-            description="Test role 2 — exact duplicate of AppRole1",
+            description="Test role 2 -exact duplicate of AppRole1",
         )
 
         # --- Near-match: high overlap (3/4 shared = 75% Jaccard) ---
@@ -149,7 +149,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-DataRole1",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_rds_read, policy_cw_logs],
-            description="Test role — near-match with DataRole2 (75% overlap)",
+            description="Test role -near-match with DataRole2 (75% overlap)",
         )
 
         iam.Role(
@@ -157,7 +157,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-DataRole2",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_rds_read, policy_cw_logs, policy_ec2_describe],
-            description="Test role — near-match with DataRole1 (75% overlap), superset",
+            description="Test role -near-match with DataRole1 (75% overlap), superset",
         )
 
         # --- Strict subset ---
@@ -166,7 +166,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-ReadOnlyRole",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_ec2_describe],
-            description="Test role — strict subset of AppRole1/AppRole2",
+            description="Test role -strict subset of AppRole1/AppRole2",
         )
 
         # --- Unique (no overlap with others) ---
@@ -175,7 +175,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-LambdaExec",
             assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
             managed_policies=[policy_lambda_full, policy_sqs_full],
-            description="Test role — unique, should not cluster",
+            description="Test role -unique, should not cluster",
         )
 
         # --- Identical inline policies, different policy names ---
@@ -183,7 +183,7 @@ class TestFixturesStack(Stack):
             self, "AGTestInlineRole1",
             role_name="AGTest-InlineRole1",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
-            description="Test role — identical inline policy as InlineRole2 (different name)",
+            description="Test role -identical inline policy as InlineRole2 (different name)",
         )
         inline_role_1.add_to_policy(iam.PolicyStatement(
             actions=["s3:GetObject", "s3:ListBucket"],
@@ -194,7 +194,7 @@ class TestFixturesStack(Stack):
             self, "AGTestInlineRole2",
             role_name="AGTest-InlineRole2",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
-            description="Test role — identical inline policy as InlineRole1 (different name)",
+            description="Test role -identical inline policy as InlineRole1 (different name)",
         )
         inline_role_2.add_to_policy(iam.PolicyStatement(
             actions=["s3:GetObject", "s3:ListBucket"],
@@ -207,7 +207,7 @@ class TestFixturesStack(Stack):
             role_name="AGTest-MixedRole",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             managed_policies=[policy_s3_read, policy_iam_read],
-            description="Test role — has both managed and inline policies",
+            description="Test role -has both managed and inline policies",
         )
         mixed_role.add_to_policy(iam.PolicyStatement(
             actions=["sts:AssumeRole"],
@@ -219,11 +219,11 @@ class TestFixturesStack(Stack):
             self, "AGTestEmptyRole",
             role_name="AGTest-EmptyRole",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
-            description="Test role — no policies at all, should be excluded from analysis",
+            description="Test role -no policies at all, should be excluded from analysis",
         )
 
         # =================================================================
-        # Test runner role — what AccessGuard assumes to read IAM
+        # Test runner role -what AccessGuard assumes to read IAM
         # =================================================================
 
         self.test_runner_role = iam.Role(
@@ -233,7 +233,7 @@ class TestFixturesStack(Stack):
                 iam.AccountRootPrincipal(),
                 iam.ServicePrincipal("lambda.amazonaws.com"),
             ),
-            description="AccessGuard test execution role — IAM read + SSO read",
+            description="AccessGuard test execution role -IAM read + SSO read",
             inline_policies={
                 "IAMRead": iam.PolicyDocument(statements=[
                     iam.PolicyStatement(
