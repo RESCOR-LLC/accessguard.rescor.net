@@ -33,6 +33,26 @@
   - Model is user-selectable; default Sonnet for cost/speed balance
   - Graceful fallback: `--no-ai` runs deterministic analysis only
 
+### Phase 3: Output Improvements
+
+#### Report generator (`reportGenerator.py`)
+- Self-contained HTML report with summary cards, entity tables, exact duplicates, subset relationships, and AI recommendations with risk ratings
+- JSON output for machine-readable pipeline integration
+- CSV output preserved for backward compatibility via existing OutputBroker
+
+### Phase 4: CLI Modernization
+
+#### New command-line flags
+- `--model` / `-m`: AI model selection (opus, sonnet, haiku, or full model ID; default: sonnet)
+- `--threshold` / `-t`: Jaccard similarity threshold (0.0-1.0; default: 0.70)
+- `--no-ai`: Deterministic analysis only, no API calls required
+- `--format` / `-f`: Local report format (html, json, csv, all; default: html)
+
+#### Integration
+- `processAccounts()` now runs RoleAnalyzer after existing similarity detection
+- HTML/JSON reports written to local output directories alongside existing CSV files
+- AI model initialization gracefully falls back if ANTHROPIC_API_KEY is not set
+
 ### Phase 1: Code Cleanup and Foundation
 
 #### Inline policy comparison
