@@ -22,7 +22,9 @@
   .action-consolidate { background: #e8f5e9; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
   .action-review { background: #fff3e0; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
   .action-keep { background: #f5f5f5; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
-  .cluster-box { background: #f8f9fb; border: 1px solid #e0e3ea; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+  .cluster-box { background: #f8f9fb; border: 1px solid #e0e3ea; border-radius: 6px; padding: 1rem; margin: 1rem 0; overflow-x: auto; }
+  .cluster-box table { table-layout: fixed; }
+  .cluster-box td, .cluster-box th { word-wrap: break-word; overflow-wrap: break-word; }
   .policy-list { font-family: monospace; font-size: 0.8rem; }
   .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.8rem; color: #666; }
   @media print { body { margin: 0; } .summary-card { break-inside: avoid; } }
