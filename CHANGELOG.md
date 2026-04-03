@@ -14,6 +14,11 @@
 - `requirements.txt` — Python dependency manifest
 - `CHANGELOG.md` — this file
 
+#### Inline policy comparison
+- Added third similarity dimension to `SimilarEntities`: inline policy content
+- Policies are canonicalized (sorted keys, policy names stripped) before comparison
+- Two entities with identical inline policy documents but different policy names are now detected as similar
+
 #### Field normalization
 - Renamed `ugr` field to `entityType` throughout `accessGuardClasses.py` and `accessGuard.py` — the old name (User/Group/Role abbreviation) was opaque
 - Cleaned up imports: removed commented-out imports, sorted alphabetically, separated stdlib from third-party

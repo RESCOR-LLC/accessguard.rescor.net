@@ -248,30 +248,35 @@ class IamRoles (IamEntities):
 ################################################################################
 class SimilarEntities:
     """
-    Class to represent entities that are similar on some basis, which should 
-    help to simplify the role engineering process. Similar entities that can be 
+    Class to represent entities that are similar on some basis, which should
+    help to simplify the role engineering process. Similar entities that can be
     detected are:
 
     1. The same managed policies
     2. The same member list (only groups)
+    3. The same inline policy content (ignoring policy names)
     """
     #---------------------------------------------------------------------------
     def __init__ (self):
         """ See the class definition for details. """
         self.byManaged = {}
         self.byMembers = {}
+        self.byInlinePolicy = {}
     #---------------------------------------------------------------------------
     def add (self, row=None):
         """
         Adds an entity to the similar entity lists
         """
-        managedKey, membersKey = self.keys(row)
+        managedKey, membersKey, policyKey = self.keys(row)
 
         if managedKey:
             self.addToList(self.byManaged, managedKey, row)
 
         if membersKey:
             self.addToList(self.byMembers, membersKey, row)
+
+        if policyKey:
+            self.addToList(self.byInlinePolicy, policyKey, row)
 
         return self
     #---------------------------------------------------------------------------
@@ -325,24 +330,59 @@ class SimilarEntities:
 
         answer += self.extractBySimilarity(items=self.byManaged.items(),
             attribute="managed", similarity="Managed Policies", format=format)
-    
+
         answer += self.extractBySimilarity(items=self.byMembers.items(),
             attribute="members", similarity="Group Membership", format=format)
 
+        answer += self.extractBySimilarity(items=self.byInlinePolicy.items(),
+            attribute="policy", similarity="Inline Policies", format=format)
+
         return answer
+    #---------------------------------------------------------------------------
+    @staticmethod
+    def canonicalizePolicy (policy):
+        """
+        Canonicalize an inline policy for comparison. Serializes to JSON with
+        sorted keys so structurally identical policies produce the same string
+        regardless of original key order or policy name.
+        """
+        if not policy:
+            return None
+
+        # policy may be a string (JSON) or a dict
+        if isinstance(policy, str):
+            try:
+                policy = json.loads(policy)
+            except (json.JSONDecodeError, TypeError):
+                return None
+
+        if not isinstance(policy, dict) or len(policy) == 0:
+            return None
+
+        # Extract just the policy documents, ignoring policy names
+        # (two policies with different names but identical content are equivalent)
+        documents = sorted(
+            [json.dumps(v, sort_keys=True) for v in policy.values()]
+            if isinstance(policy, dict) else [json.dumps(policy, sort_keys=True)]
+        )
+
+        return "|".join(documents)
     #---------------------------------------------------------------------------
     def keys (self, row=None):
         """
-        Return the keys for managed policies and group members. Entities with
-        no managed policies are considered similar, but entities with no 
-        members, including groups, are not considered similar.
+        Return the keys for managed policies, group members, and inline
+        policies. Entities with no managed policies are considered similar,
+        but entities with no members, including groups, are not considered
+        similar. Inline policy keys compare canonical policy content,
+        ignoring policy names.
         """
         managedKey = "|".join(sorted(row.managed)) \
             if row.managed else None
         membersKey = "|".join(sorted(row.members)) \
             if row.members and (row.entityType == "Group") else None
+        policyKey = self.canonicalizePolicy(row.policy)
 
-        return managedKey, membersKey
+        return managedKey, membersKey, policyKey
 ################################################################################
 # 
 ################################################################################
