@@ -6,10 +6,15 @@ the analysis directly against IAM entities in the current account.
 """
 
 import sys
+import os
 import json
 import datetime
 import logging
 import boto3
+
+# Add src/ to path
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(_ROOT, "src"))
 
 import commonClasses as cc
 import accessGuardClasses as agc
