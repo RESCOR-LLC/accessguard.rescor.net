@@ -94,4 +94,11 @@ deployment, and multi-account configuration.
 
 ## License
 
-Copyright RESCOR LLC. All rights reserved.
+Copyright (C) 2020-2026 RESCOR LLC.
+
+AccessGuard is licensed under the [GNU Affero General Public License v3.0](LICENSE)
+(AGPL-3.0). You may use, modify, and redistribute this software under the terms
+of the AGPL. If you offer a modified version as a network service, you must make
+the source code available to users of that service.
+
+See [LICENSE](LICENSE) for the full text.
