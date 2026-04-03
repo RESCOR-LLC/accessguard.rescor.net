@@ -134,10 +134,15 @@ def generate_html(catalog: list, similarities: list, analysis: dict,
 """
         for sim in similarities:
             sim_type = sim.get("similarity", "")
-            shared = ", ".join(sim.get("by", [])[:5])
-            if len(sim.get("by", [])) > 5:
-                shared += f" (+{len(sim['by']) - 5} more)"
-            entities = "<br>".join(sim.get("entities", []))
+            by_val = sim.get("by", [])
+            if isinstance(by_val, list):
+                shared = ", ".join(str(x) for x in by_val[:5])
+                if len(by_val) > 5:
+                    shared += f" (+{len(by_val) - 5} more)"
+            else:
+                shared = str(by_val)
+            entities_val = sim.get("entities", [])
+            entities = "<br>".join(str(x) for x in entities_val) if isinstance(entities_val, list) else str(entities_val)
             html += f'  <tr><td>{sim_type}</td><td class="policy-list">{shared}</td><td>{entities}</td></tr>\n'
         html += "</table>\n"
 
