@@ -13,3 +13,7 @@
 #### New files
 - `requirements.txt` — Python dependency manifest
 - `CHANGELOG.md` — this file
+
+#### Field normalization
+- Renamed `ugr` field to `entityType` throughout `accessGuardClasses.py` and `accessGuard.py` — the old name (User/Group/Role abbreviation) was opaque
+- Cleaned up imports: removed commented-out imports, sorted alphabetically, separated stdlib from third-party

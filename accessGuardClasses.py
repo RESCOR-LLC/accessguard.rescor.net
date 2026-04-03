@@ -2,19 +2,17 @@
 ################################################################################
 ### See README.md
 ###############################################################################
-from json.encoder import JSONEncoder 
-import re
-#import os
-import json
-import botocore
-#import boto3
-import logging
-#import time
-import commonClasses as cc
-import pprint
-import time
-import hashlib
 import datetime
+import hashlib
+import json
+import logging
+import pprint
+import re
+import time
+from json.encoder import JSONEncoder
+
+import botocore
+import commonClasses as cc
 
 # Ephemeral credentials supported
 _EPHEMERAL_CREDENTIALS_SUPPORTED = False
@@ -292,11 +290,11 @@ class SimilarEntities:
     def orderDescriptions (self, rows=None):
         """
         Extract the decriptions for a list of IamEntityRow object which has been
-        sorted by the "name" attribute, then the "account" and "ugr" attribute.
+        sorted by the "name" attribute, then the "account" and "entityType" attribute.
         """
 
         return [row.arn for row in sorted(rows, 
-            key=lambda row : (row.name, row.account, row.ugr))]
+            key=lambda row : (row.name, row.account, row.entityType))]
     #---------------------------------------------------------------------------
     def extractBySimilarity (self, items=None, attribute=None, similarity=None,
         format=dict):
@@ -342,7 +340,7 @@ class SimilarEntities:
         managedKey = "|".join(sorted(row.managed)) \
             if row.managed else None
         membersKey = "|".join(sorted(row.members)) \
-            if row.members and (row.ugr == "Group") else None
+            if row.members and (row.entityType == "Group") else None
 
         return managedKey, membersKey
 ################################################################################
@@ -425,7 +423,7 @@ class IamOutputRow:
     the managed policy list, and the inline policies.
     """
     #---------------------------------------------------------------------------
-    def __init__ (self, reportDate=None, name=None, account=None, ugr=None, members=[], 
+    def __init__ (self, reportDate=None, name=None, account=None, entityType=None, members=[], 
         managed=[], policy=None, description=None, arn=None):
         """ See the class definition for details. """
         self.id = None
@@ -434,12 +432,12 @@ class IamOutputRow:
         self.name = name
         self.description = None
         self.account = account
-        self.ugr = ugr
+        self.entityType = ugr
         self.members = members
         self.managed = managed
         self.policy = policy
         self.arn = arn if arn\
-            else f'arn:aws:iam::{self.account}:{self.ugr.lower()}/{self.name}'
+            else f'arn:aws:iam::{self.account}:{self.entityType.lower()}/{self.name}'
 
         # The ID is generated from the ARN and reportDate
         digest =  hashlib.sha256()
@@ -456,7 +454,7 @@ class IamOutputRow:
         "reportDate": self.reportDate,
         "id": self.id,
         "account": self.account,
-        "type": self.ugr,
+        "type": self.entityType,
         "name": self.name,
         "arn": self.arn,
         "description": self.description,
@@ -497,7 +495,7 @@ class IamOutputRow:
                 self.arn,
                 self.description ,
                 self.account ,
-                self.ugr ,
+                self.entityType ,
                 self.members if not serialize\
                     else pprint.pformat(self.members),
                 self.managed if not serialize\
@@ -541,7 +539,7 @@ class IamActor (cc.Actor):
                 row = IamOutputRow(
                     name=getattr(entity, _name),
                     account=self.accountId,
-                    ugr=_type, 
+                    entityType=_type, 
                     members=entity.members,
                     managed=entity.managed,
                     policy=entity.policies
