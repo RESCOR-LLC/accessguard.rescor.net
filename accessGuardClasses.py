@@ -472,7 +472,7 @@ class IamOutputRow:
         self.name = name
         self.description = None
         self.account = account
-        self.entityType = ugr
+        self.entityType = entityType
         self.members = members
         self.managed = managed
         self.policy = policy
