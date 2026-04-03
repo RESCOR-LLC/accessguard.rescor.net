@@ -1,0 +1,3 @@
+AccountId,Nickname,AssumableRole,Partition,DefaultRegion,SSORegion
+123456789012,production,arn:aws:iam::123456789012:role/AccessGuardReadRole,aws,us-east-1,us-east-1
+234567890123,staging,arn:aws:iam::234567890123:role/AccessGuardReadRole,aws,us-east-1,us-east-1

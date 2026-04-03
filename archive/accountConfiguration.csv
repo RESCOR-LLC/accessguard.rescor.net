@@ -1,2 +1,0 @@
-AccountId,Nickname,AssumableRole,Partition,DefaultRegion,SSORegion
-111111111111,sample,arn:aws:iam::111111111111:role/sample,aws,us-east-1,us-east-1
