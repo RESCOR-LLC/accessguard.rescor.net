@@ -73,10 +73,26 @@ def main():
         results.append(row)
         similar.add(row)
 
-    # Roles
+    # Roles — also fetch trust policy, tags, and lastUsed via GetRole
     cc.emit("900040", "i", "Downloading IAM roles...")
     roles = agc.IamRoles(client=iam_client).download()
     for entity in roles:
+        # GetRole returns trust policy, tags, lastUsed that list_roles omits
+        try:
+            role_detail = iam_client.get_role(RoleName=entity.roleName)["Role"]
+            trust_policy = role_detail.get("AssumeRolePolicyDocument", {})
+            tags_list = role_detail.get("Tags", [])
+            tags = {t["Key"]: t["Value"] for t in tags_list}
+            last_used = role_detail.get("RoleLastUsed", {}).get("LastUsedDate")
+            last_used = last_used.isoformat() if last_used else None
+            create_date = role_detail.get("CreateDate")
+            create_date = create_date.isoformat() if create_date else None
+        except Exception:
+            trust_policy = {}
+            tags = {}
+            last_used = None
+            create_date = None
+
         row = agc.IamOutputRow(
             name=entity.roleName,
             account=account_id,
@@ -85,6 +101,10 @@ def main():
             managed=entity.managed,
             policy=entity.policies,
             reportDate=report_date,
+            trustPolicy=trust_policy,
+            tags=tags,
+            lastUsed=last_used,
+            createDate=create_date,
         )
         results.append(row)
         similar.add(row)

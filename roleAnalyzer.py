@@ -72,6 +72,10 @@ class RoleCluster:
                     "inlinePolicyNames": sorted(
                         e.policy.keys() if isinstance(e.policy, dict) else []
                     ),
+                    "trustPolicy": getattr(e, "trustPolicy", {}),
+                    "tags": getattr(e, "tags", {}),
+                    "lastUsed": getattr(e, "lastUsed", None),
+                    "createDate": getattr(e, "createDate", None),
                 }
                 for e in self.entities
             ],
@@ -99,11 +103,32 @@ Overly granular permissions cause role explosion, audit failure, and \
 productivity loss. The goal is the smallest number of well-defined roles \
 that let the organization function effectively while remaining auditable.
 
+CRITICAL CONTEXT you must consider for each entity:
+- trustPolicy: reveals WHO or WHAT can assume this role (service principals, \
+SSO SAML providers, account roots, specific IAM entities). Roles with different \
+trust principals serve different purposes even if their permissions are identical.
+- tags: may include aws:cloudformation:stack-name (created by CFN/CDK), \
+Application, Environment, or other ownership tags. Consolidating roles owned \
+by different stacks/applications will cause drift or breakage on next deploy.
+- lastUsed: when the role was last assumed. Roles unused for 90+ days are \
+strong candidates for deletion rather than consolidation.
+- createDate: when the role was created.
+
+Do NOT recommend consolidating:
+- Roles managed by different CloudFormation stacks or CDK constructs
+- Roles with trust policies bound to different service principals
+- AWS-reserved roles (AWSReservedSSO_*, aws-service-role/*)
+- CDK bootstrap roles (cdk-hnb659fds-*)
+
 Always return valid JSON matching the requested schema. Do not include \
 explanatory text outside the JSON."""
 
     USER_PROMPT_TEMPLATE = """Analyze these {n} AWS IAM entities that share \
 ≥{threshold}% of their managed policies for consolidation opportunities.
+
+Each entity includes trustPolicy (who can assume it), tags (ownership/stack \
+info), lastUsed (when last assumed, if available), and createDate. Use these \
+to determine whether consolidation is safe or would break existing automation.
 
 {cluster_json}
 
