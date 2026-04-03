@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AccessGuard Report — April 03, 2026</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; color: #222; line-height: 1.5; }
+  h1 { font-size: 1.5rem; border-bottom: 2px solid #1a237e; padding-bottom: 0.5rem; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 0.9rem; color: #555; margin-bottom: 2rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #1a237e; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.25rem; }
+  h3 { font-size: 1rem; margin-top: 1.5rem; color: #333; }
+  table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 0.4rem 0.6rem; border: 1px solid #ddd; }
+  th { background: #f5f5f5; font-weight: 600; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .summary-card { background: #f8f9fb; border: 1px solid #e0e3ea; border-radius: 6px; padding: 1rem; text-align: center; }
+  .summary-card .number { font-size: 2rem; font-weight: 700; color: #1a237e; }
+  .summary-card .label { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+  .risk-low { color: #2e7d32; font-weight: 600; }
+  .risk-medium { color: #e65100; font-weight: 600; }
+  .risk-high { color: #c62828; font-weight: 600; }
+  .action-consolidate { background: #e8f5e9; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
+  .action-review { background: #fff3e0; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
+  .action-keep { background: #f5f5f5; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.8rem; }
+  .cluster-box { background: #f8f9fb; border: 1px solid #e0e3ea; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+  .policy-list { font-family: monospace; font-size: 0.8rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.8rem; color: #666; }
+  @media print { body { margin: 0; } .summary-card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<h1>AccessGuard — IAM Role Engineering Report</h1>
+<p class="subtitle">April 03, 2026 — Model: Anthropic(claude-sonnet-4-6)</p>
+
+<div class="summary-grid">
+  <div class="summary-card"><div class="number">64</div><div class="label">IAM Entities</div></div>
+  <div class="summary-card"><div class="number">1</div><div class="label">AWS Accounts</div></div>
+  <div class="summary-card"><div class="number">3</div><div class="label">Exact Duplicates</div></div>
+  <div class="summary-card"><div class="number">2</div><div class="label">Similar Clusters</div></div>
+  <div class="summary-card"><div class="number">6</div><div class="label">Subset Relationships</div></div>
+  <div class="summary-card"><div class="number">9</div><div class="label">AI Recommendations</div></div>
+</div>
+
+<h2>Entity Summary</h2>
+<table>
+  <tr><th>Entity Type</th><th>Count</th></tr>
+  <tr><td>Group</td><td>1</td></tr><tr><td>Role</td><td>60</td></tr><tr><td>User</td><td>3</td></tr>
+</table>
+
+<table>
+  <tr><th>Account</th><th>Entities</th></tr>
+  <tr><td>123456789012</td><td>64</td></tr>
+</table>
+
+<h2>Exact Duplicates</h2>
+<p>Entities with identical managed policies, group membership, or inline policy content.</p>
+<table>
+  <tr><th>Similarity Type</th><th>Shared By</th><th>Entities</th></tr>
+  <tr><td>Managed Policies</td><td class="policy-list">AdministratorAccess</td><td>arn:aws:iam::123456789012:role/AWSReservedSSO_AWSAdministratorAccess_a1b2c3d4e5f6g7h8<br>arn:aws:iam::123456789012:role/InitialSetup_Role<br>arn:aws:iam::123456789012:role/OrgCloudAdministrator<br>arn:aws:iam::123456789012:role/OrgAdministrator<br>arn:aws:iam::123456789012:role/cdk-hnb659fds-cfn-exec-role-123456789012-us-east-1<br>arn:aws:iam::123456789012:group/wheel</td></tr>
+  <tr><td>Managed Policies</td><td class="policy-list">AGTest-S3ReadOnly, AGTest-EC2Describe, AGTest-CloudWatchLogs</td><td>arn:aws:iam::123456789012:role/AGTest-AppRole1<br>arn:aws:iam::123456789012:role/AGTest-AppRole2</td></tr>
+  <tr><td>Inline Policies</td><td class="policy-list">{'AGTestInlineRole1DefaultPolicy7312CC83': {'Version': '2012-10-17', 'Statement': [{'Action': ['s3:GetObject', 's3:ListBucket'], 'Resource': '*', 'Effect': 'Allow'}]}}</td><td>arn:aws:iam::123456789012:role/AGTest-InlineRole1<br>arn:aws:iam::123456789012:role/AGTest-InlineRole2</td></tr>
+</table>
+
+<h2>Subset Relationships</h2>
+<p>Entities whose managed policies are a strict subset of another entity — strong consolidation candidates.</p>
+<table>
+  <tr><th>Subset Role</th><th>Superset Role</th><th>Additional Policies in Superset</th></tr>
+  <tr><td>AGTest-AppRole1</td><td>AGTest-DataRole2</td><td class="policy-list">AGTest-RDSReadOnly</td></tr>
+  <tr><td>AGTest-AppRole2</td><td>AGTest-DataRole2</td><td class="policy-list">AGTest-RDSReadOnly</td></tr>
+  <tr><td>AGTest-DataRole1</td><td>AGTest-DataRole2</td><td class="policy-list">AGTest-EC2Describe</td></tr>
+  <tr><td>AGTest-ReadOnlyRole</td><td>AGTest-AppRole1</td><td class="policy-list">AGTest-CloudWatchLogs</td></tr>
+  <tr><td>AGTest-ReadOnlyRole</td><td>AGTest-AppRole2</td><td class="policy-list">AGTest-CloudWatchLogs</td></tr>
+  <tr><td>AGTest-ReadOnlyRole</td><td>AGTest-DataRole2</td><td class="policy-list">AGTest-CloudWatchLogs, AGTest-RDSReadOnly</td></tr>
+</table>
+
+<h2>AI Consolidation Recommendations</h2>
+<p>Analysis by Anthropic(claude-sonnet-4-6) at ≥70% similarity threshold.</p>
+<table>
+  <tr><th>Risk Level</th><th>Count</th><th>Action</th><th>Count</th></tr>
+  <tr><td class="risk-low">LOW</td><td>2</td><td class="action-consolidate">CONSOLIDATE</td><td>1</td></tr>
+  <tr><td class="risk-medium">MEDIUM</td><td>1</td><td class="action-review">REVIEW</td><td>4</td></tr>
+  <tr><td class="risk-high">HIGH</td><td>6</td><td class="action-keep">KEEP SEPARATE</td><td>4</td></tr>
+</table>
+<div class="cluster-box">
+<h3>Cluster 1: wheel, cdk-hnb659fds-cfn-exec-role-123456789012-us-east-1, InitialSetup_Role, AWSReservedSSO_AWSAdministratorAccess_a1b2c3d4e5f6g7h8, OrgCloudAdministrator, OrgAdministrator</h3>
+<p><em>All 6 entities in this cluster share only AdministratorAccess but must be kept entirely separate due to incompatible entity types (1 IAM Group), reserved naming conventions (1 CDK bootstrap role, 1 AWS SSO reserved role), and distinct trust principals (CloudFormation, EC2/SSM/Lambda, cross-account root, org-wide); the two Org* roles and InitialSetup_Role are all unused (90+ days or never) and warrant deletion review, while OrgCloudAdministrator and OrgAdministrator represent high-risk security findings that should be investigated immediately regardless of consolidation.</em></p>
+<table>
+<tr><th>Action</th><th>Target</th><th>Merge</th><th>Added Permissions</th><th>Risk</th><th>Rationale</th></tr>
+<tr><td><span class="action-keep">KEEP_SEPARATE</span></td><td>cdk-hnb659fds-cfn-exec-role-123456789012-us-east-1</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>This is an AWS CDK bootstrap execution role identified by the reserved cdk-hnb659fds-* naming convention. It is assumed by cloudformation.amazonaws.com and is managed entirely by the CDK bootstrap process. Consolidation is explicitly prohibited.</td></tr>
+<tr><td><span class="action-keep">KEEP_SEPARATE</span></td><td>AWSReservedSSO_AWSAdministratorAccess_a1b2c3d4e5f6g7h8</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>This role follows the AWSReservedSSO_* naming convention and is trusted by a SAML federation provider tied to AWS SSO. It is managed exclusively by AWS IAM Identity Center and cannot be safely consolidated. Last used 2024-07-10, confirming active use.</td></tr>
+<tr><td><span class="action-review">REVIEW</span></td><td>InitialSetup_Role</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>InitialSetup_Role has never been used (lastUsed: null) despite being created in August 2020 — over 5 years of inactivity. It should be evaluated for deletion rather than consolidation. Its multi-service trust policy (SSM + EC2 + Lambda) combined with AdministratorAccess makes it a high-risk credential that violates least-privilege principles. Recommend investigating whether it is still needed; if not, delete it. If still required, scope the trust to the minimum necessary service principal and replace AdministratorAccess with a scoped policy.</td></tr>
+<tr><td><span class="action-review">REVIEW</span></td><td>OrgCloudAdministrator</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>OrgCloudAdministrator has never been used (lastUsed: null) since creation in August 2020. The trust policy grants sts:AssumeRole to account 998877665544 root with no conditions, which is a high-risk cross-account privilege escalation path. Recommend verifying whether account 998877665544 is still a known, owned account. If the role is no longer needed, delete it immediately. If still required, add an ExternalId condition and MFA requirement, and scope permissions below AdministratorAccess.</td></tr>
+<tr><td><span class="action-review">REVIEW</span></td><td>OrgAdministrator</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>OrgAdministrator was created very recently (2026-04-03) but has never been used. The trust policy allows any principal from the account root that is part of the organization to assume this role, which is a very broad trust scope for an administrator role. Recommend validating whether this role serves a legitimate, specific use case and if so narrowing the principal to specific roles or users rather than the account root, and adding additional conditions such as MFA or aws:PrincipalTag constraints.</td></tr>
+<tr><td><span class="action-keep">KEEP_SEPARATE</span></td><td>wheel</td><td></td><td class="policy-list"></td><td class="risk-high">HIGH</td><td>The 'wheel' entity is an IAM Group, not a role. IAM Groups attach permissions to IAM users directly and cannot be assumed by services or federated identities. It must remain separate from all roles in this cluster. Verify which IAM users are members of this group — granting AdministratorAccess to an IAM group is a broad privilege grant and should be reviewed for necessity.</td></tr>
+</table>
+</div>
+<div class="cluster-box">
+<h3>Cluster 2: AGTest-AppRole1, AGTest-AppRole2, AGTest-DataRole1, AGTest-DataRole2</h3>
+<p><em>All four roles are safe candidates for consolidation given identical trust principals, matching ownership tags, and zero usage since creation; the optimal outcome is eliminating the duplicate AGTest-AppRole2, merging AGTest-DataRole1 into AGTest-DataRole2, and retaining one App role and one Data role as distinct least-privilege tiers.</em></p>
+<table>
+<tr><th>Action</th><th>Target</th><th>Merge</th><th>Added Permissions</th><th>Risk</th><th>Rationale</th></tr>
+<tr><td><span class="action-consolidate">CONSOLIDATE</span></td><td>AGTest-AppRole1</td><td>AGTest-AppRole2</td><td class="policy-list"></td><td class="risk-low">LOW</td><td>These two roles are exact duplicates: same managed policies (AGTest-CloudWatchLogs, AGTest-EC2Describe, AGTest-S3ReadOnly), same ec2.amazonaws.com trust principal, same Application/Environment/AutoCleanup tags, and both have null lastUsed. Neither is CFN/CDK-managed (no aws:cloudformation:stack-name tag). Safe to delete AGTest-AppRole2 and redirect any instance profiles or references to AGTest-AppRole1.</td></tr>
+<tr><td><span class="action-review">REVIEW</span></td><td>AGTest-DataRole2</td><td>AGTest-DataRole1</td><td class="policy-list">AGTest-EC2Describe</td><td class="risk-low">LOW</td><td>AGTest-DataRole1 (CloudWatchLogs + RDSReadOnly + S3ReadOnly) is a strict subset of AGTest-DataRole2 (CloudWatchLogs + EC2Describe + RDSReadOnly + S3ReadOnly). Consolidating onto AGTest-DataRole2 would grant EC2 Describe access to workloads that currently assume AGTest-DataRole1. This is low-risk given the read-only nature of EC2Describe, but should be reviewed to confirm DataRole1 workloads have no business reason to be denied EC2 visibility. Neither role is CFN/CDK-managed, both share the same trust principal and tags, and both show null lastUsed.</td></tr>
+<tr><td><span class="action-keep">KEEP_SEPARATE</span></td><td>None</td><td>AGTest-AppRole1, AGTest-DataRole2</td><td class="policy-list">AGTest-RDSReadOnly</td><td class="risk-medium">MEDIUM</td><td>The App roles (EC2Describe focus) and Data roles (RDSReadOnly focus) represent intentionally distinct functional tiers — application layer versus data layer. Even though all policies are read-only and no CFN/CDK ownership conflicts exist, merging across these tiers would give application-layer EC2 instances unnecessary RDS visibility. The separation should be preserved as a deliberate least-privilege boundary. Once AGTest-AppRole2 is eliminated (per recommendation 1) and AGTest-DataRole1 is consolidated into AGTest-DataRole2 (per recommendation 2), the estate reduces cleanly to two purpose-built roles.</td></tr>
+</table>
+</div>
+
+<div class="footer">
+  <p>Generated by <a href="https://www.rescor.net">RESCOR</a> AccessGuard.
+  No data were transmitted to RESCOR during generation.</p>
+  <p>&copy; 2026 RESCOR LLC — www.rescor.net</p>
+</div>
+</body>
+</html>
