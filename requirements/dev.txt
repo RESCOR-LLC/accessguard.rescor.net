@@ -1,0 +1,6 @@
+# Development and testing dependencies
+-r core.txt
+pytest>=7.0.0
+moto[iam,ssm,s3,sts]>=5.0.0
+aws-cdk-lib>=2.170.0
+constructs>=10.0.0

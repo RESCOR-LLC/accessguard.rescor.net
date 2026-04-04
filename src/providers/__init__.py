@@ -32,12 +32,26 @@ def register(name: str, cls: type):
     _REGISTRY[name] = cls
 
 
+_INSTALL_HINTS = {
+    "aws": "pip install -r requirements/aws.txt",
+    "azure": "pip install -r requirements/azure.txt",
+    "gcp": "pip install -r requirements/gcp.txt",
+}
+
+
 def get_provider(name: str, **kwargs) -> CloudProvider:
     """Instantiate a registered cloud provider."""
     if name not in _REGISTRY:
         available = ", ".join(sorted(_REGISTRY.keys())) or "none"
-        raise ValueError(
-            f"Unknown provider '{name}'. Available: {available}")
+        hint = _INSTALL_HINTS.get(name, "")
+        msg = f"Provider '{name}' is not available."
+        if hint:
+            msg += f"\n  Install its dependencies: {hint}"
+        if available:
+            msg += f"\n  Currently available providers: {available}"
+        else:
+            msg += "\n  No providers are installed. Run: ./scripts/setup.sh"
+        raise ValueError(msg)
     return _REGISTRY[name](**kwargs)
 
 

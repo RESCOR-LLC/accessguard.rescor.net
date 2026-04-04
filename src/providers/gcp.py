@@ -59,7 +59,13 @@ class GcpProvider(CloudProvider):
         Args:
             region: GCP region (informational — IAM is global).
         """
-        import google.auth
+        try:
+            import google.auth
+        except ImportError:
+            raise ImportError(
+                "GCP provider requires google-auth. "
+                "Install: pip install -r requirements/gcp.txt"
+            )
         self.region = region
         self._credentials, self._project = google.auth.default()
         self._current_account = self._project or "unknown"
