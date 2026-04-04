@@ -7,3 +7,5 @@ obsolete/
 .venv/
 cdk.out/
 .pytest_cache/
+accessguard-report-*.html
+accessguard-report-*.json
