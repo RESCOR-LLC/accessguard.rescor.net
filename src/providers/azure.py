@@ -54,6 +54,12 @@ class AzureProvider(CloudProvider):
         Args:
             region: Azure region (informational — Entra ID and ARM are global)
         """
+        # Suppress verbose HTTP/credential logging from Azure and Graph SDKs
+        for name in ("azure", "msal", "urllib3", "azure.core.pipeline",
+                      "azure.identity", "httpx", "httpcore",
+                      "microsoft", "kiota", "msgraph"):
+            logging.getLogger(name).setLevel(logging.WARNING)
+
         try:
             from azure.identity import DefaultAzureCredential
         except ImportError:
@@ -76,14 +82,18 @@ class AzureProvider(CloudProvider):
         accounts = []
 
         for sub in sub_client.subscriptions.list():
-            if sub.state and sub.state.lower() == "enabled":
+            state = sub.state if isinstance(sub.state, str) \
+                else (sub.state.value if sub.state else "")
+            if state.lower() == "enabled":
                 accounts.append({
                     "id": sub.subscription_id,
                     "name": sub.display_name or sub.subscription_id,
                 })
-                # Capture tenant ID from first subscription
-                if not self._tenant_id and sub.tenant_id:
-                    self._tenant_id = sub.tenant_id
+                # Capture tenant ID if available
+                if not self._tenant_id:
+                    policies = getattr(sub, "subscription_policies", None)
+                    if policies:
+                        self._tenant_id = getattr(policies, "tenant_id", None)
 
         _emit("710010", "i",
               f"Found {len(accounts)} enabled Azure subscriptions")
