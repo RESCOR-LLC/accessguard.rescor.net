@@ -52,3 +52,9 @@ try:
     register("aws", AwsProvider)
 except ImportError:
     pass  # boto3 not installed — AWS provider unavailable
+
+try:
+    from providers.azure import AzureProvider
+    register("azure", AzureProvider)
+except ImportError:
+    pass  # azure-identity not installed — Azure provider unavailable

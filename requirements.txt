@@ -3,6 +3,14 @@ anthropic>=0.40.0
 aws-cdk-lib>=2.170.0
 constructs>=10.0.0
 
+# Azure provider
+azure-identity>=1.15.0
+azure-mgmt-authorization>=4.0.0
+azure-mgmt-resource>=23.0.0
+azure-mgmt-subscription>=3.0.0
+azure-mgmt-managementgroups>=1.0.0
+msgraph-sdk>=1.0.0
+
 # Test dependencies
 pytest>=7.0.0
 moto[iam,ssm,s3,sts]>=5.0.0
