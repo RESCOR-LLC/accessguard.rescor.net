@@ -1,0 +1,11 @@
+#!/bin/bash
+# AccessGuard launcher — activates venv automatically
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+VENV="$SCRIPT_DIR/.venv"
+
+if [ ! -d "$VENV" ]; then
+    echo "AccessGuard is not set up yet. Run: ./scripts/setup.sh"
+    exit 1
+fi
+
+exec "$VENV/bin/python3" "$SCRIPT_DIR/src/cli.py" "$@"

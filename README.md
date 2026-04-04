@@ -10,24 +10,22 @@ explosion while maintaining security boundaries.
 ## Quick Start
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+# Clone and set up (one-time)
+git clone https://github.com/RESCOR-LLC/accessguard.rescor.net.git
+cd accessguard.rescor.net
+./scripts/setup.sh                    # all providers
+./scripts/setup.sh aws                # AWS only
+./scripts/setup.sh aws azure          # AWS + Azure
 
-# Scan the current AWS account (deterministic analysis, no AI)
-python3 src/cli.py
+# Scan (no venv activation needed — ./accessguard handles it)
+./accessguard --provider aws
+./accessguard --provider aws --org --ai
+./accessguard --provider azure --org
+./accessguard --provider gcp --accounts my-project-id
 
-# Scan with AI-powered consolidation recommendations
+# With AI analysis
 export ANTHROPIC_API_KEY=sk-ant-...
-python3 src/cli.py --ai
-
-# Scan all accounts in an AWS Organization
-python3 src/cli.py --org --ai
-
-# Scan specific accounts
-python3 src/cli.py --accounts 111111111111,222222222222 --ai
-
-# Customize the model and threshold
-python3 src/cli.py --ai --model=opus --threshold=0.60
+./accessguard --provider aws --ai --model=sonnet
 ```
 
 Reports are written to the current directory (override with `--output`):
