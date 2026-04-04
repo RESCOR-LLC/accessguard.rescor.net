@@ -58,3 +58,9 @@ try:
     register("azure", AzureProvider)
 except ImportError:
     pass  # azure-identity not installed — Azure provider unavailable
+
+try:
+    from providers.gcp import GcpProvider
+    register("gcp", GcpProvider)
+except ImportError:
+    pass  # google-cloud-asset not installed — GCP provider unavailable
