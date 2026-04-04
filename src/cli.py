@@ -121,7 +121,7 @@ def main():
             cc.emit("800043", "e",
                 f"Cannot discover accounts: {e}. "
                 f"Scanning current credentials only.")
-            account_ids = [provider._current_account]
+            account_ids = [getattr(provider, '_current_account', 'default')]
     elif args.accounts:
         account_ids = [a.strip() for a in args.accounts.split(",")]
         cc.emit("800044", "i",
