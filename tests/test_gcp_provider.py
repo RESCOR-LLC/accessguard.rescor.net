@@ -96,7 +96,7 @@ class TestGcpMemberParsing:
 
 class TestGcpProviderDiscovery:
 
-    @patch("providers.gcp.resourcemanager_v3.ProjectsClient")
+    @patch("google.cloud.resourcemanager_v3.ProjectsClient")
     def test_discover_projects(self, mock_projects_cls):
         provider = _make_provider()
 

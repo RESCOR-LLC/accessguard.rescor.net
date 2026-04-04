@@ -31,10 +31,6 @@ Authentication uses DefaultAzureCredential, which supports:
 
 import logging
 
-from azure.identity import DefaultAzureCredential
-from azure.mgmt.authorization import AuthorizationManagementClient
-from azure.mgmt.subscription import SubscriptionClient
-
 from providers.base import CloudProvider, EntityRecord
 
 _LOGGER = logging.getLogger(__name__)
@@ -58,6 +54,7 @@ class AzureProvider(CloudProvider):
         Args:
             region: Azure region (informational — Entra ID and ARM are global)
         """
+        from azure.identity import DefaultAzureCredential
         self.region = region
         self.credential = DefaultAzureCredential()
         self._tenant_id = None
@@ -68,6 +65,7 @@ class AzureProvider(CloudProvider):
 
     def discover_accounts(self) -> list:
         """List all Azure subscriptions accessible to the current credential."""
+        from azure.mgmt.subscription import SubscriptionClient
         sub_client = SubscriptionClient(self.credential)
         accounts = []
 
@@ -91,6 +89,7 @@ class AzureProvider(CloudProvider):
         Returns None if the subscription is inaccessible.
         """
         try:
+            from azure.mgmt.authorization import AuthorizationManagementClient
             auth_client = AuthorizationManagementClient(
                 self.credential, subscription_id)
 

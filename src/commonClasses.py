@@ -22,16 +22,22 @@ from json.decoder import JSONDecodeError
 import logging
 import os
 from typing import Dict
-import boto3
-from boto3 import session
-import botocore.exceptions
-import botocore
 import re
 import pprint
 import json
 from datetime import date, datetime
 import time
-from boto3.dynamodb.conditions import Key
+
+# AWS SDK — lazy import guard for environments without boto3
+try:
+    import boto3
+    from boto3 import session
+    import botocore.exceptions
+    import botocore
+    from boto3.dynamodb.conditions import Key
+    _HAS_BOTO3 = True
+except ImportError:
+    _HAS_BOTO3 = False
 from decimal import Decimal
 import random
 import uuid
@@ -232,7 +238,7 @@ class Actor:
           else:
               base = {}
 
-          if maxResults and re.search("^\d+$", str(maxResults)):
+          if maxResults and re.search(r"^\d+$", str(maxResults)):
               base["MaxResults"] = maxResults
 
           parameters = {**base, **additional}
@@ -841,9 +847,9 @@ class DynamoDbActor (Actor):
       # Obtain details from table ARN: 
       #   arn:<partition>:dynamodb:<region>:<accountId>:table/<tableName>
       _ROLE_PATTERN = \
-        re.compile("^arn:(?P<partitionId>aws[-\w]*):dynamodb:" +
-        "(?P<regionName>[-\w]+):(?P<accountId>\d{12}|\*):" +
-        "table/(?P<tableName>.*)$")
+        re.compile(r"^arn:(?P<partitionId>aws[-\w]*):dynamodb:" +
+        r"(?P<regionName>[-\w]+):(?P<accountId>\d{12}|\*):" +
+        r"table/(?P<tableName>.*)$")
 
       # Obtain details from the ARN
       try:

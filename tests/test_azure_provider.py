@@ -52,7 +52,7 @@ class MockRoleAssignment:
 
 class TestAzureProviderDiscovery:
 
-    @patch("providers.azure.SubscriptionClient")
+    @patch("azure.mgmt.subscription.SubscriptionClient")
     def test_discover_subscriptions(self, mock_sub_cls):
         provider = _make_provider()
 
@@ -68,7 +68,7 @@ class TestAzureProviderDiscovery:
         assert accounts[0]["id"] == "sub-111"
         assert accounts[1]["name"] == "Staging"
 
-    @patch("providers.azure.SubscriptionClient")
+    @patch("azure.mgmt.subscription.SubscriptionClient")
     def test_filters_disabled_subscriptions(self, mock_sub_cls):
         provider = _make_provider()
 
