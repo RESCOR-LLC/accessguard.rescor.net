@@ -110,41 +110,24 @@ class RoleAnalyzer:
     Stage 2 (AI-powered): Per-cluster consolidation recommendations
     """
 
-    SYSTEM_PROMPT = """You are an AWS IAM security analyst specializing in role \
-engineering and the principle of optimal privilege. You analyze groups of IAM \
-roles that share overlapping permissions and recommend consolidation \
-opportunities.
+    SYSTEM_PROMPT_PREAMBLE = """You are an identity and access management \
+security analyst specializing in role engineering and the principle of \
+optimal privilege. You analyze groups of identity entities that share \
+overlapping permissions and recommend consolidation opportunities.
 
 Your recommendations must balance security with operational practicality. \
 Overly granular permissions cause role explosion, audit failure, and \
 productivity loss. The goal is the smallest number of well-defined roles \
 that let the organization function effectively while remaining auditable.
 
-CRITICAL CONTEXT you must consider for each entity:
-- trustPolicy: reveals WHO or WHAT can assume this role (service principals, \
-SSO SAML providers, account roots, specific IAM entities). Roles with different \
-trust principals serve different purposes even if their permissions are identical.
-- tags: may include aws:cloudformation:stack-name (created by CFN/CDK), \
-Application, Environment, or other ownership tags. Consolidating roles owned \
-by different stacks/applications will cause drift or breakage on next deploy.
-- lastUsed: when the role was last assumed. Roles unused for 90+ days are \
-strong candidates for deletion rather than consolidation.
-- createDate: when the role was created.
-
-Do NOT recommend consolidating:
-- Roles managed by different CloudFormation stacks or CDK constructs
-- Roles with trust policies bound to different service principals
-- AWS-reserved roles (AWSReservedSSO_*, aws-service-role/*)
-- CDK bootstrap roles (cdk-hnb659fds-*)
-
 Always return valid JSON matching the requested schema. Do not include \
 explanatory text outside the JSON."""
 
-    USER_PROMPT_TEMPLATE = """Analyze these {n} AWS IAM entities that share \
+    USER_PROMPT_TEMPLATE = """Analyze these {n} identity entities that share \
 ≥{threshold}% of their managed policies for consolidation opportunities.
 
-Each entity includes trustPolicy (who can assume it), tags (ownership/stack \
-info), lastUsed (when last assumed, if available), and createDate. Use these \
+Each entity includes trust/delegation info, tags (ownership metadata), \
+lastUsed (when last active, if available), and createDate. Use these \
 to determine whether consolidation is safe or would break existing automation.
 
 {cluster_json}
@@ -171,14 +154,17 @@ Risk ratings:
 - MEDIUM: write permissions added to non-sensitive services
 - HIGH: write permissions added to IAM, KMS, STS, Organizations, or other sensitive services"""
 
-    def __init__(self, threshold: float = 0.70, model_provider=None):
+    def __init__(self, threshold: float = 0.70, model_provider=None,
+                 platform_context: str = ""):
         """
         Args:
             threshold: Jaccard similarity threshold for clustering (0.0 to 1.0)
             model_provider: ModelProvider instance, or None for deterministic-only
+            platform_context: Cloud-specific rules for the AI prompt (from provider)
         """
         self.threshold = threshold
         self.model = model_provider
+        self.platform_context = platform_context
         self.entities = []
 
     def add_entities(self, entities: list):
@@ -293,9 +279,14 @@ Risk ratings:
             cluster_json=json.dumps(cluster_data, indent=2),
         )
 
+        # Assemble system prompt: generic preamble + platform-specific context
+        system_prompt = self.SYSTEM_PROMPT_PREAMBLE
+        if self.platform_context:
+            system_prompt += "\n\n" + self.platform_context
+
         try:
             result = self.model.analyze(
-                system_prompt=self.SYSTEM_PROMPT,
+                system_prompt=system_prompt,
                 user_prompt=user_prompt,
             )
             return result
