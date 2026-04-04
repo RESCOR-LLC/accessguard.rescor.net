@@ -54,7 +54,13 @@ class AzureProvider(CloudProvider):
         Args:
             region: Azure region (informational — Entra ID and ARM are global)
         """
-        from azure.identity import DefaultAzureCredential
+        try:
+            from azure.identity import DefaultAzureCredential
+        except ImportError:
+            raise ImportError(
+                "Azure provider requires azure-identity. "
+                "Install: pip install -r requirements/azure.txt"
+            )
         self.region = region
         self.credential = DefaultAzureCredential()
         self._tenant_id = None

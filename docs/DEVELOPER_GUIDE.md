@@ -1,5 +1,109 @@
 # AccessGuard Developer Guide
 
+## Setup from Scratch
+
+### Prerequisites
+
+| Requirement | Version | Check Command |
+|-------------|---------|---------------|
+| Python | 3.9+ | `python3 --version` |
+| Git | any | `git --version` |
+| AWS CLI | (optional) | `aws --version` |
+| Azure CLI | (required for Azure) | `az --version` |
+| Google Cloud CLI | (required for GCP) | `gcloud --version` |
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/RESCOR-LLC/accessguard.rescor.net.git
+cd accessguard.rescor.net
+
+# Run the setup script (creates venv, installs dependencies)
+./scripts/setup.sh               # all providers
+./scripts/setup.sh aws            # AWS only
+./scripts/setup.sh aws azure      # AWS + Azure
+./scripts/setup.sh --dev          # all providers + testing tools
+
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Verify
+python3 src/cli.py --help
+```
+
+The setup script:
+1. Finds Python 3.9+ on your system
+2. Creates a virtual environment at `.venv/`
+3. Installs only the dependencies for your selected providers
+4. Checks for required CLI tools (`az`, `gcloud`) and warns if missing
+5. Verifies that selected providers registered successfully
+
+### Manual Setup (without the script)
+
+```bash
+git clone https://github.com/RESCOR-LLC/accessguard.rescor.net.git
+cd accessguard.rescor.net
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install for your target platforms:
+pip install -r requirements/aws.txt       # AWS only
+pip install -r requirements/azure.txt     # Azure only
+pip install -r requirements/gcp.txt       # GCP only
+pip install -r requirements/dev.txt       # Testing + CDK
+pip install -r requirements.txt           # Everything
+```
+
+### Dependency Groups
+
+| File | Contents | When to Use |
+|------|----------|-------------|
+| `requirements/core.txt` | anthropic SDK | Always installed (base for all providers) |
+| `requirements/aws.txt` | core + boto3 | Scanning AWS accounts |
+| `requirements/azure.txt` | core + azure-identity, azure-mgmt-*, msgraph-sdk | Scanning Azure subscriptions |
+| `requirements/gcp.txt` | core + google-cloud-asset, google-cloud-iam, google-cloud-resource-manager | Scanning GCP projects |
+| `requirements/dev.txt` | core + pytest, moto, aws-cdk-lib | Development, testing, CDK deployment |
+| `requirements.txt` | Everything above | Full installation |
+
+Only the SDKs for your selected providers are required. If you only use AWS,
+you don't need the Azure or GCP libraries (and vice versa). Uninstalled
+providers are silently excluded from the `--provider` choices.
+
+### Authenticating to Cloud Providers
+
+**AWS:**
+```bash
+aws configure                          # or set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY
+python3 src/cli.py --provider aws
+```
+
+**Azure:**
+```bash
+az login                               # opens browser for Entra ID authentication
+python3 src/cli.py --provider azure --org
+```
+
+**GCP:**
+```bash
+gcloud auth application-default login  # opens browser for Google auth
+python3 src/cli.py --provider gcp --org
+```
+
+### AI Analysis Setup
+
+AI analysis requires an Anthropic API key:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+python3 src/cli.py --provider aws --ai --model sonnet
+```
+
+Without the key, `--ai` is silently disabled and deterministic analysis runs instead.
+
+---
+
 ## Extending AccessGuard
 
 AccessGuard is designed for extensibility at two integration points:

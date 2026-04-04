@@ -1,0 +1,3 @@
+# AWS provider dependencies
+-r core.txt
+boto3>=1.26.0
