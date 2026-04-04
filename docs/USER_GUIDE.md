@@ -36,8 +36,37 @@ pip install -r requirements.txt
 
 ## Authentication
 
-AccessGuard needs AWS credentials with IAM read permissions. It reads but never
-writes IAM entities.
+AccessGuard needs read-only identity permissions on the target platform. It
+reads but never writes IAM entities.
+
+### Quick Setup: CDK Scanner Role (AWS)
+
+The fastest way to set up AWS permissions is the CDK scanner role:
+
+```bash
+# Deploy to the management account (trusts itself for local scanning)
+cdk deploy AGScannerRole
+
+# Deploy to a target account, trusting the management account
+cdk deploy AGScannerRole --context trusted_principal=arn:aws:iam::MGMT_ACCOUNT_ID:root
+
+# Deploy trusting all accounts in an Organization
+cdk deploy AGScannerRole --context trusted_org_id=o-xxxxxxxxxx
+```
+
+Then scan with: `python3 src/cli.py --role AccessGuardScannerRole --org`
+
+### Azure Setup
+
+Create an App Registration in Entra ID with `Directory.Read.All` (Graph API)
+and assign the `Reader` role at the subscription or management group scope.
+See `cdk/stacks/scanner_roles_stack.py` for detailed instructions.
+
+### GCP Setup
+
+Create a service account with `roles/cloudasset.viewer` and
+`roles/iam.securityReviewer`. See `cdk/stacks/scanner_roles_stack.py`
+for detailed instructions.
 
 ### Required IAM Permissions
 

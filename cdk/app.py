@@ -20,18 +20,31 @@ AccessGuard CDK application.
 
 Stacks:
   AccessGuardStack     — production infrastructure (DynamoDB, S3, SSM, Lambda)
+  AGScannerRole        — read-only scanner role for target AWS accounts
   TestFixturesStack    — test IAM roles with deliberate overlaps (deploy/destroy for testing)
 
 Usage:
   cdk deploy AccessGuard          # deploy production infrastructure
+  cdk deploy AGScannerRole        # deploy scanner role (per target account)
   cdk deploy AGTestFixtures       # deploy test roles for Level 3 testing
   cdk destroy AGTestFixtures      # clean up test roles
   cdk synth                       # synthesize all stacks (for validation)
+
+Scanner role deployment:
+  # Trust a specific account:
+  cdk deploy AGScannerRole --context trusted_principal=arn:aws:iam::MGMT_ACCT:root
+
+  # Trust all accounts in an Organization:
+  cdk deploy AGScannerRole --context trusted_org_id=o-xxxxxxxxxx
+
+  # Custom role name:
+  cdk deploy AGScannerRole --context trusted_principal=... role_name=MyCustomName
 """
 
 import aws_cdk as cdk
 
 from stacks.accessguard_stack import AccessGuardStack
+from stacks.scanner_roles_stack import ScannerRolesStack
 from stacks.test_fixtures_stack import TestFixturesStack
 
 app = cdk.App()
@@ -39,6 +52,11 @@ app = cdk.App()
 # Production infrastructure
 AccessGuardStack(app, "AccessGuard",
     description="AccessGuard — IAM role engineering infrastructure",
+)
+
+# Scanner role — deploy in each target account
+ScannerRolesStack(app, "AGScannerRole",
+    description="AccessGuard — read-only scanner role for IAM auditing",
 )
 
 # Test fixtures (deploy only when testing, destroy after)
