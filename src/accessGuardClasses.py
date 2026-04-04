@@ -797,10 +797,10 @@ class ParseRowException (Exception):
 # 
 ################################################################################
 class ParseRow:
-    _ACCOUNT_STRIP = re.compile("\D")
-    _ACCOUNT_PATTERN = re.compile("^(?P<accountId>\d{12})$")
-    _ROLE_PATTERN = re.compile("^arn:(?P<partition>aws[-\w]*):iam::" + 
-        "(?P<accountId>\d{12}|\*):role/(?P<roleName>.*)$")
+    _ACCOUNT_STRIP = re.compile(r"\D")
+    _ACCOUNT_PATTERN = re.compile(r"^(?P<accountId>\d{12})$")
+    _ROLE_PATTERN = re.compile(r"^arn:(?P<partition>aws[-\w]*):iam::" +
+        r"(?P<accountId>\d{12}|\*):role/(?P<roleName>.*)$")
     #---------------------------------------------------------------------------
     def __init__ (self, columns={}, row=[]):
         self.columns = columns
@@ -836,7 +836,7 @@ class ParseRow:
             accountId = match.group("accountId")
 
         if accountId == "*":
-            role = re.sub(re.compile(":\*:role\/"), ":%s:role\/" % 
+            role = re.sub(re.compile(r":\*:role/"), ":%s:role/" %
                 self.accountId, role)
         elif role and (accountId != self.accountId):
             raise ParseRowException("ParseRow role accountId %s is not " + 

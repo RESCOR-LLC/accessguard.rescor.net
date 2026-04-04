@@ -36,10 +36,6 @@ Authentication uses Application Default Credentials (ADC):
 import logging
 from collections import defaultdict
 
-import google.auth
-from google.cloud import asset_v1
-from google.cloud import resourcemanager_v3
-
 from providers.base import CloudProvider, EntityRecord
 
 _LOGGER = logging.getLogger(__name__)
@@ -63,6 +59,7 @@ class GcpProvider(CloudProvider):
         Args:
             region: GCP region (informational — IAM is global).
         """
+        import google.auth
         self.region = region
         self._credentials, self._project = google.auth.default()
         self._current_account = self._project or "unknown"
@@ -76,6 +73,7 @@ class GcpProvider(CloudProvider):
         List all GCP projects accessible to the current credential.
         Uses Resource Manager API.
         """
+        from google.cloud import resourcemanager_v3
         rm_client = resourcemanager_v3.ProjectsClient(
             credentials=self._credentials)
         accounts = []
@@ -104,6 +102,7 @@ class GcpProvider(CloudProvider):
         Returns None if the project is inaccessible.
         """
         try:
+            from google.cloud import asset_v1
             # Test access by creating an asset client scoped to the project
             asset_client = asset_v1.AssetServiceClient(
                 credentials=self._credentials)
@@ -139,6 +138,7 @@ class GcpProvider(CloudProvider):
         binding_count = 0
 
         try:
+            from google.cloud import asset_v1
             request = asset_v1.SearchAllIamPoliciesRequest(scope=scope)
 
             for result in asset_client.search_all_iam_policies(request=request):
