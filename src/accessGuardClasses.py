@@ -28,7 +28,11 @@ import re
 import time
 from json.encoder import JSONEncoder
 
-import botocore
+try:
+    import botocore
+except ImportError:
+    botocore = None
+
 import commonClasses as cc
 
 # Ephemeral credentials supported
