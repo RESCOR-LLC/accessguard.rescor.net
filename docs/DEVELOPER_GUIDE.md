@@ -343,20 +343,64 @@ platform requires only a new `CloudProvider` subclass that produces
 
 ## Testing
 
+### Unit Tests (no credentials needed)
+
 ```bash
-# Run all unit tests (no cloud credentials needed)
+source .venv/bin/activate
+
+# All tests
 python3 -m pytest tests/ --ignore=tests/test_live.py -v
 
-# Run provider-specific tests
+# Provider-specific
+python3 -m pytest tests/test_role_analyzer.py -v
+python3 -m pytest tests/test_similarity.py -v
 python3 -m pytest tests/test_azure_provider.py -v
 python3 -m pytest tests/test_gcp_provider.py -v
+python3 -m pytest tests/test_integration_iam.py -v   # uses moto (mock AWS)
+```
 
-# Run live test against real AWS
-python3 src/cli.py --provider aws --output /tmp/test
+### Live Testing (requires credentials)
 
-# Run live test against real Azure
-python3 src/cli.py --provider azure --org --output /tmp/test
+Before live testing, ensure you have authenticated to the target platform.
+See the User Guide for complete platform setup instructions.
 
-# Run live test against real GCP
-python3 src/cli.py --provider gcp --org --output /tmp/test
+```bash
+# AWS — requires aws configure or AWS env vars
+./accessguard --provider aws --output /tmp/ag-test
+
+# AWS — all Organization accounts with AI analysis
+./accessguard --provider aws --org --ai --output /tmp/ag-test
+
+# Azure — requires az login
+./accessguard --provider azure --org --output /tmp/ag-test
+
+# GCP — requires gcloud auth application-default login
+# Also requires Cloud Asset API enabled on the project
+./accessguard --provider gcp --accounts <project-id> --output /tmp/ag-test
+```
+
+### Live Test Checklist
+
+When testing a provider against real infrastructure, verify:
+
+1. Account/subscription/project discovery works (`--org`)
+2. Entity scanning produces correct entity counts
+3. Exact similarity detection finds known duplicates
+4. Jaccard clustering groups known near-matches
+5. Subset detection finds known containment relationships
+6. AI recommendations (if `--ai`) are sensible and risk-rated
+7. HTML report renders correctly in a browser
+8. JSON report parses and contains all sections
+9. Graceful handling of inaccessible accounts (skipped, not crashed)
+10. Clean output (no SDK logging noise, clear error messages)
+
+### CDK Test Fixtures (AWS only)
+
+Deploy known IAM roles with deliberate overlaps for validation:
+
+```bash
+source .venv/bin/activate
+cdk deploy AGTestFixtures                   # deploy test roles
+./accessguard --provider aws --ai           # scan and verify
+cdk destroy AGTestFixtures                  # clean up
 ```

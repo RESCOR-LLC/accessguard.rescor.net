@@ -34,116 +34,290 @@ pip install -r requirements.txt
 
 ---
 
-## Authentication
+## Platform Setup
 
-AccessGuard needs read-only identity permissions on the target platform. It
-reads but never writes IAM entities.
+AccessGuard needs read-only identity permissions on each target platform.
+It reads but never writes IAM entities. Each platform requires:
 
-### Quick Setup: CDK Scanner Role (AWS)
+1. A CLI tool for authentication
+2. Read-only permissions for AccessGuard to scan
 
-The fastest way to set up AWS permissions is the CDK scanner role:
+---
+
+### AWS Setup
+
+**Prerequisites:**
+
+| Component | Required? | Install |
+|-----------|-----------|---------|
+| AWS CLI | Recommended | `brew install awscli` or [AWS docs](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) |
+| AWS credentials | Yes | `aws configure` or `~/.aws/credentials` |
+
+**Step 1 — Configure credentials:**
 
 ```bash
-# Deploy to the management account (trusts itself for local scanning)
+aws configure
+# Enter: Access Key ID, Secret Access Key, region (e.g., us-east-1)
+```
+
+Or set environment variables:
+```bash
+export AWS_ACCESS_KEY_ID=AKIA...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_DEFAULT_REGION=us-east-1
+```
+
+**Step 2 — Ensure IAM read permissions.** Your credentials need:
+
+```
+iam:Get*        iam:List*        sts:GetCallerIdentity
+sso-admin:ListInstances          sso-admin:ListPermissionSets
+sso-admin:DescribePermissionSet  sso-admin:ListManagedPoliciesInPermissionSet
+sso-admin:GetInlinePolicyForPermissionSet
+```
+
+The easiest path: use the CDK scanner role (creates an assumable read-only role):
+
+```bash
+# Deploy to the management account
+source .venv/bin/activate
 cdk deploy AGScannerRole
 
-# Deploy to a target account, trusting the management account
-cdk deploy AGScannerRole --context trusted_principal=arn:aws:iam::MGMT_ACCOUNT_ID:root
-
-# Deploy trusting all accounts in an Organization
-cdk deploy AGScannerRole --context trusted_org_id=o-xxxxxxxxxx
+# Or trust a specific account
+cdk deploy AGScannerRole --context trusted_principal=arn:aws:iam::ACCOUNT_ID:root
 ```
 
-Then scan with: `python3 src/cli.py --role AccessGuardScannerRole --org`
+**Step 3 — Scan:**
 
-### Azure Setup
-
-Create an App Registration in Entra ID with `Directory.Read.All` (Graph API)
-and assign the `Reader` role at the subscription or management group scope.
-See `cdk/stacks/scanner_roles_stack.py` for detailed instructions.
-
-### GCP Setup
-
-Create a service account with `roles/cloudasset.viewer` and
-`roles/iam.securityReviewer`. See `cdk/stacks/scanner_roles_stack.py`
-for detailed instructions.
-
-### Required IAM Permissions
-
-```json
-{
-  "Effect": "Allow",
-  "Action": [
-    "iam:GetRole", "iam:GetGroup", "iam:GetRolePolicy",
-    "iam:GetUserPolicy", "iam:GetGroupPolicy",
-    "iam:ListAttachedGroupPolicies", "iam:ListAttachedRolePolicies",
-    "iam:ListAttachedUserPolicies", "iam:ListGroupPolicies",
-    "iam:ListGroups", "iam:ListRolePolicies", "iam:ListRoles",
-    "iam:ListUserPolicies", "iam:ListUsers",
-    "sts:GetCallerIdentity"
-  ],
-  "Resource": "*"
-}
+```bash
+./accessguard --provider aws                              # current account
+./accessguard --provider aws --org                        # all Organization accounts
+./accessguard --provider aws --role AccessGuardScannerRole --org  # using the CDK role
+./accessguard --provider aws --accounts 111111111111,222222222222  # specific accounts
 ```
 
-For SSO permission set auditing, add:
+**Multi-account scanning** requires either:
+- Running as the management account root (can use `organizations:ListAccounts`)
+- Or an IAM role that can `sts:AssumeRole` into target accounts
 
-```json
-{
-  "Effect": "Allow",
-  "Action": [
-    "sso-admin:ListInstances",
-    "sso-admin:ListPermissionSets",
-    "sso-admin:DescribePermissionSet",
-    "sso-admin:ListManagedPoliciesInPermissionSet",
-    "sso-admin:GetInlinePolicyForPermissionSet"
-  ],
-  "Resource": "*"
-}
-```
-
-### Credential Sources
-
-AccessGuard uses the standard boto3 credential chain:
-
-1. Environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
-2. AWS credentials file (`~/.aws/credentials`)
-3. AWS config file with profiles (`~/.aws/config`)
-4. IAM role (when running on EC2 or Lambda)
-
-For multi-account scanning, configure a profile that assumes a role in each
-target account:
+For cross-account role assumption, configure `~/.aws/config`:
 
 ```ini
-# ~/.aws/config
 [profile target-account]
-role_arn = arn:aws:iam::111111111111:role/AccessGuardReadRole
+role_arn = arn:aws:iam::111111111111:role/AccessGuardScannerRole
 source_profile = default
 region = us-east-1
 ```
 
 ---
 
-## Local Mode (Recommended)
+### Azure Setup
+
+**Prerequisites:**
+
+| Component | Required? | Install |
+|-----------|-----------|---------|
+| Azure CLI | Yes | `brew install azure-cli` or [Microsoft docs](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) |
+| Azure subscription | Yes | Any Entra ID tenant with Azure subscription |
+
+**Step 1 — Authenticate with Azure CLI:**
+
+```bash
+az login
+```
+
+This opens a browser for Entra ID authentication. AccessGuard uses
+`DefaultAzureCredential` which picks up the `az login` session
+automatically.
+
+**Step 2 — Verify access:**
+
+```bash
+az account list --output table
+```
+
+You should see your subscription(s) listed. AccessGuard needs:
+
+| Permission | Scope | Purpose |
+|------------|-------|---------|
+| `Reader` (Azure RBAC) | Subscription or Management Group | List role definitions and assignments |
+| `Directory.Read.All` (Graph API) | Entra ID tenant | List users, groups, service principals |
+
+For a quick test with your own account, `az login` typically gives you
+sufficient permissions. For production scanning, create an App Registration:
+
+```bash
+# Create an app registration
+az ad app create --display-name "AccessGuard Scanner"
+
+# Note the appId from the output, then create a service principal
+az ad sp create --id <appId>
+
+# Grant Reader on the subscription
+az role assignment create \
+  --assignee <appId> \
+  --role "Reader" \
+  --scope "/subscriptions/<subscription-id>"
+
+# Grant Graph API permissions (requires admin consent)
+az ad app permission add --id <appId> \
+  --api 00000003-0000-0000-c000-000000000000 \
+  --api-permissions 7ab1d382-f21e-4acd-a863-ba3e13f7da61=Role
+
+az ad app permission admin-consent --id <appId>
+```
+
+For unattended/automated scanning, use service principal credentials:
+
+```bash
+export AZURE_TENANT_ID=your-tenant-id
+export AZURE_CLIENT_ID=your-app-client-id
+export AZURE_CLIENT_SECRET=your-client-secret
+```
+
+**Step 3 — Scan:**
+
+```bash
+./accessguard --provider azure                    # current subscription
+./accessguard --provider azure --org              # all subscriptions in tenant
+./accessguard --provider azure --accounts <subscription-id>  # specific subscription
+```
+
+---
+
+### GCP Setup
+
+**Prerequisites:**
+
+| Component | Required? | Install |
+|-----------|-----------|---------|
+| Google Cloud CLI | Yes | `brew install --cask google-cloud-sdk` or [Google docs](https://cloud.google.com/sdk/docs/install) |
+| GCP project | Yes | Any project where you have IAM permissions |
+
+**Step 1 — Authenticate with gcloud:**
+
+```bash
+gcloud auth application-default login
+```
+
+This opens a browser for Google authentication and writes credentials to
+`~/.config/gcloud/application_default_credentials.json`. AccessGuard reads
+these automatically.
+
+**Note:** `gcloud auth login` (without `application-default`) authenticates
+the CLI itself but does NOT create Application Default Credentials. You
+need `application-default login` specifically.
+
+**Step 2 — Enable required APIs in your project:**
+
+```bash
+# Cloud Asset API — required for bulk IAM policy scanning
+gcloud services enable cloudasset.googleapis.com --project=<project-id>
+
+# IAM API — required for service account details
+gcloud services enable iam.googleapis.com --project=<project-id>
+```
+
+You can also enable these in the Cloud Console:
+- https://console.cloud.google.com/apis/api/cloudasset.googleapis.com
+- https://console.cloud.google.com/apis/api/iam.googleapis.com
+
+**Step 3 — Ensure permissions.** Your credentials need:
+
+| Role | Purpose |
+|------|---------|
+| `roles/cloudasset.viewer` | Bulk-scan all IAM bindings via Cloud Asset API |
+| `roles/iam.securityReviewer` | Service account details, role definitions |
+
+For a quick test with your own account, Owner or Editor permissions on the
+project are sufficient. For production scanning, create a dedicated service
+account:
+
+```bash
+# Create service account
+gcloud iam service-accounts create accessguard-scanner \
+  --display-name="AccessGuard Scanner" \
+  --project=<project-id>
+
+# Grant permissions
+SA_EMAIL=accessguard-scanner@<project-id>.iam.gserviceaccount.com
+
+gcloud projects add-iam-policy-binding <project-id> \
+  --member="serviceAccount:$SA_EMAIL" \
+  --role="roles/cloudasset.viewer"
+
+gcloud projects add-iam-policy-binding <project-id> \
+  --member="serviceAccount:$SA_EMAIL" \
+  --role="roles/iam.securityReviewer"
+
+# For on-premise use: download a key
+gcloud iam service-accounts keys create ~/accessguard-gcp-key.json \
+  --iam-account=$SA_EMAIL
+
+export GOOGLE_APPLICATION_CREDENTIALS=~/accessguard-gcp-key.json
+```
+
+**Step 4 — Scan:**
+
+```bash
+./accessguard --provider gcp --accounts <project-id>   # specific project
+./accessguard --provider gcp --org                      # all projects (needs org-level access)
+```
+
+**Troubleshooting:**
+
+| Error | Fix |
+|-------|-----|
+| "Cloud Asset API has not been used in project" | Enable the API: `gcloud services enable cloudasset.googleapis.com --project=<id>` |
+| "GCP credentials expired" | Re-authenticate: `gcloud auth application-default login` |
+| "Permission denied" on Cloud Asset | Grant `roles/cloudasset.viewer` to your identity |
+| 0 entities found | Check that the project has IAM bindings (new projects may only have the owner binding) |
+
+---
+
+### AI Analysis Setup (All Platforms)
+
+AI-powered consolidation recommendations require an Anthropic API key:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+./accessguard --provider aws --ai --model sonnet
+```
+
+Without the key, `--ai` is silently disabled and deterministic analysis
+(exact duplicates, Jaccard clustering, subset detection) runs instead.
+
+| Model | Flag | Best For |
+|-------|------|----------|
+| Claude Sonnet | `--model sonnet` (default) | Standard analysis — best cost/speed/quality |
+| Claude Opus | `--model opus` | Complex environments with 500+ entities |
+| Claude Haiku | `--model haiku` | Cost-sensitive batch runs |
+
+---
+
+## Usage
 
 ### Basic Usage
 
 ```bash
-# Deterministic analysis only — no API key needed
-python3 tests/test_live.py
-
-# With AI-powered consolidation recommendations
-export ANTHROPIC_API_KEY=sk-ant-...
-python3 tests/test_live.py --ai
+./accessguard --provider aws                              # current account, deterministic
+./accessguard --provider aws --ai                         # with AI recommendations
+./accessguard --provider aws --org --ai                   # all Organization accounts
+./accessguard --provider azure --org                      # all Azure subscriptions
+./accessguard --provider gcp --accounts my-project        # specific GCP project
 ```
 
 ### Command-Line Options
 
 | Option | Default | Description |
 |--------|---------|-------------|
+| `--provider` | `aws` | Cloud provider: `aws`, `azure`, `gcp` |
+| `--org` | off | Scan all accounts/subscriptions/projects |
+| `--accounts` | — | Comma-separated account IDs to scan |
+| `--role` | provider default | Role name to assume in target accounts |
 | `--ai` | off | Enable AI-powered consolidation analysis |
-| `--model=MODEL` | `sonnet` | AI model: `opus`, `sonnet`, `haiku`, or full model ID |
-| `--threshold=N` | `0.70` | Jaccard similarity threshold (0.0-1.0) |
+| `--model` | `sonnet` | AI model: `opus`, `sonnet`, `haiku`, or full model ID |
+| `--threshold` | `0.70` | Jaccard similarity threshold (0.0-1.0) |
 
 ### Output Files
 
@@ -329,11 +503,11 @@ python3 -m pytest tests/ --ignore=tests/test_live.py -v
 
 ```bash
 # Deterministic only
-python3 tests/test_live.py
+./accessguard --provider aws
 
 # With AI
 export ANTHROPIC_API_KEY=sk-ant-...
-python3 tests/test_live.py --ai
+./accessguard --provider aws --ai
 ```
 
 ### Deploy Test Fixtures
@@ -342,7 +516,7 @@ For Level 3 validation, deploy known IAM roles to a test account:
 
 ```bash
 cdk deploy AGTestFixtures
-python3 tests/test_live.py --ai
+./accessguard --provider aws --ai
 cdk destroy AGTestFixtures
 ```
 
