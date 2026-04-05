@@ -60,9 +60,16 @@ class GcpProvider(CloudProvider):
             region: GCP region (informational — IAM is global).
         """
         # Suppress verbose gRPC and Google auth logging
+        # grpc._plugin_wrapping uses _LOGGER.exception() for auth callback
+        # failures, so it must be set to CRITICAL to suppress
         for name in ("google", "grpc", "urllib3", "google.auth",
-                      "google.auth.transport"):
-            logging.getLogger(name).setLevel(logging.WARNING)
+                      "google.auth.transport", "grpc._plugin_wrapping",
+                      "grpc._cython"):
+            logging.getLogger(name).setLevel(logging.CRITICAL)
+
+        # Suppress gRPC stderr output for auth callback errors
+        import os
+        os.environ.setdefault("GRPC_VERBOSITY", "ERROR")
 
         try:
             import google.auth
@@ -223,13 +230,13 @@ class GcpProvider(CloudProvider):
         key metadata and creation dates. Also adds service accounts
         that have no IAM bindings (orphaned).
         """
-        from google.cloud import iam_v1
+        from google.cloud.iam_admin_v1 import IAMClient, ListServiceAccountsRequest, ListServiceAccountKeysRequest
 
-        iam_client = iam_v1.IAMClient(credentials=credentials)
+        iam_client = IAMClient(credentials=credentials)
         sa_count = 0
 
         try:
-            request = iam_v1.ListServiceAccountsRequest(
+            request = ListServiceAccountsRequest(
                 name=f"projects/{project_id}")
 
             for sa in iam_client.list_service_accounts(request=request):
@@ -248,12 +255,12 @@ class GcpProvider(CloudProvider):
 
                         # Get key info for trust analysis
                         try:
-                            keys_request = iam_v1.ListServiceAccountKeysRequest(
+                            keys_request = ListServiceAccountKeysRequest(
                                 name=sa.name)
                             keys = list(iam_client.list_service_account_keys(
                                 request=keys_request))
                             user_keys = [k for k in keys
-                                         if k.key_type == iam_v1.ListServiceAccountKeysRequest.KeyType.USER_MANAGED]
+                                         if k.key_type == ListServiceAccountKeysRequest.KeyType.USER_MANAGED]
                             rec.trust_info = {
                                 "totalKeys": len(keys),
                                 "userManagedKeys": len(user_keys),
