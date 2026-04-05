@@ -59,15 +59,27 @@ class GcpProvider(CloudProvider):
         Args:
             region: GCP region (informational — IAM is global).
         """
+        # Suppress verbose gRPC and Google auth logging
+        for name in ("google", "grpc", "urllib3", "google.auth",
+                      "google.auth.transport"):
+            logging.getLogger(name).setLevel(logging.WARNING)
+
         try:
             import google.auth
+            from google.auth import exceptions as auth_exceptions
         except ImportError:
             raise ImportError(
                 "GCP provider requires google-auth. "
                 "Install: pip install -r requirements/gcp.txt"
             )
+
         self.region = region
-        self._credentials, self._project = google.auth.default()
+        try:
+            self._credentials, self._project = google.auth.default()
+        except google.auth.exceptions.DefaultCredentialsError:
+            raise EnvironmentError(
+                "GCP credentials not found. Run: gcloud auth application-default login"
+            )
         self._current_account = self._project or "unknown"
 
     @property
@@ -162,7 +174,12 @@ class GcpProvider(CloudProvider):
                   f"{len(member_roles)} principals")
 
         except Exception as e:
-            _emit("720031", "w", f"  IAM policy scan failed: {e}")
+            err_msg = str(e)
+            if "Reauthentication" in err_msg or "RefreshError" in type(e).__name__:
+                _emit("720031", "e",
+                      "  GCP credentials expired. Run: gcloud auth application-default login")
+            else:
+                _emit("720031", "w", f"  IAM policy scan failed: {e}")
 
         # ─── Step 2: Build EntityRecord per principal ───────────────────
         for member, roles in member_roles.items():
