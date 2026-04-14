@@ -9,3 +9,34 @@ cdk.out/
 .pytest_cache/
 accessguard-report-*.html
 accessguard-report-*.json
+
+# ── Credentials and secrets (NEVER commit) ──
+.env
+.env.*
+!.env.example
+!.env.production
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.pkcs12
+credentials.json
+secrets.json
+secrets.yaml
+secrets.yml
+**/credentials/
+**/secrets/
+*.secret
+.npmrc
+!.npmrc.example
+sasl_passwd
+sasl_passwd.db
+
+# ── Token and key files ──
+token.txt
+*.token
+api_key*
+auth_token*
+service-account*.json

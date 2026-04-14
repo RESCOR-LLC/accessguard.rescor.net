@@ -1,0 +1,20 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  sast:
+    name: SAST
+    uses: RESCOR-LLC/core.rescor.net/.github/workflows/reusable-sast.yml@main
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    with:
+      node-version: '20'
+    secrets:
+      pkg-token: ${{ secrets.PKG_TOKEN }}
