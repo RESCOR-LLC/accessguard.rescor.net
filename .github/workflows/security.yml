@@ -18,3 +18,13 @@ jobs:
       node-version: '20'
     secrets:
       pkg-token: ${{ secrets.PKG_TOKEN }}
+
+  track-failure:
+    name: Track failure
+    needs: [sast]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RESCOR-LLC/core.rescor.net/.github/actions/track-failure@main
+        with:
+          github-token: ${{ secrets.CI_FAILURES_TOKEN }}
