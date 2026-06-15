@@ -1,5 +1,27 @@
 # AccessGuard Changelog
 
+## 2026-06-15 — Sensitive-data history rewrite confirmed clean
+
+Closure of the 2026-06-04 history rewrite. GitHub Support ticket
+**#4470387** (filed 2026-06-10) ran cache clearance and garbage
+collection on the repository on 2026-06-11.
+
+Verification on 2026-06-15:
+
+- API: all 5 pre-rewrite SHAs return HTTP 422 ("No commit found"):
+  `8d43c2f`, `225e92b`, `77fe2d9`, `339a6f4`, `3dec1712`.
+- Web UI: all three previously-200 file URLs and the commit-diff URLs
+  now return HTTP 404.
+
+The local recovery tag `pre-history-rewrite-2026-06-04` (which points
+at the pre-rewrite state, still containing the leaked AWS account IDs)
+was deleted from `origin` on 2026-06-04 and remains **local only** on
+Andy's workstation. Do not push it.
+
+No credentials were rotated — only AWS *account identifiers* were
+exposed (not secrets), and per RESCOR's credential-rotation policy
+account identifiers alone do not require rotation.
+
 ## Modernization (2026-04-03 — in progress)
 
 ### Phase 1: Code Cleanup and Foundation
